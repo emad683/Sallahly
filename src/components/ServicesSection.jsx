@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWrench, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
+import { faWrench, faShieldHalved, faCalendarCheck, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { servicesData } from '../services/data';
 import ProductCard from './ProductCard';
 
@@ -11,31 +12,47 @@ export default function ServicesSection() {
         
         {/* Section Heading */}
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 bg-[#bdd6ff]/40 text-[#082545] px-3.5 py-1.5 rounded-full text-xs font-bold mb-3 border border-[#bdd6ff]">
-            <FontAwesomeIcon icon={faWrench} className="text-[#082545] text-xs" />
-            <span>احترافية وجودة معتمدة</span>
-          </div>
 
           <h2 className="text-3xl sm:text-4xl font-black text-[#121c28] tracking-tight">
-            خدماتنا الأكثر طلباً
+            خدمات الصيانة المنزلية المعتمدة
           </h2>
 
           <p className="text-sm sm:text-base text-[#595f64] font-medium mt-3">
-            نعرض ثلاث خدمات رئيسية بأسعارها المعتمدة رسمياً دون أي رسوم خفية أو تكاليف غير متوقعة
+            خدمات صيانة فورية متكاملة بأسعار شفافة محددة مسبقاً وفنيين مفحوصين أمنياً دون أي رسوم خفية أو إكراميات
           </p>
         </div>
 
-        {/* 3 Services Grid */}
+        {/* 6 Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {servicesData.map((service) => (
             <ProductCard key={service.id} service={service} />
           ))}
         </div>
 
-        {/* Quality Guarantee Note */}
-        <div className="mt-12 p-4 rounded-2xl bg-white border border-[#e5eeff] max-w-2xl mx-auto flex items-center justify-center gap-3 text-center text-xs text-[#485f83] font-semibold">
-          <FontAwesomeIcon icon={faShieldHalved} className="text-[#FF9F1C] text-base" />
-          <span>كل خدمة مشمولة بضمان صلحلي الذهبي لمدة 30 يوماً على قطع الغيار والمصنعية</span>
+        {/* Bottom Booking Quick Banner */}
+        <div className="mt-12 p-6 rounded-xl bg-white border border-[#dfe9fa] max-w-3xl mx-auto shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-right">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-[#e5eeff] text-[#082545] flex items-center justify-center text-lg shrink-0">
+              <FontAwesomeIcon icon={faShieldHalved} className="text-[#FF9F1C]" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-[#121c28]">
+                مش لاقي مشكلتك أو محتاج فحص شامل لبيتك؟
+              </h4>
+              <p className="text-xs text-[#595f64] mt-0.5">
+                احجز زيارة فني معتمد للمعاينة والكشف الدقيق وتحديد العطل فوراً بضمان 30 يوماً.
+              </p>
+            </div>
+          </div>
+
+          <Link
+            to="/booking"
+            className="h-10 px-5 rounded-lg bg-[#082545] hover:bg-[#0d3b6e] text-white font-bold text-xs flex items-center gap-2 transition-all shadow-md shrink-0 cursor-pointer"
+          >
+            <FontAwesomeIcon icon={faCalendarCheck} />
+            <span>احجز موعد مخصص</span>
+            <FontAwesomeIcon icon={faArrowLeft} className="text-[10px]" />
+          </Link>
         </div>
 
       </div>

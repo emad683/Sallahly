@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import Details from './pages/Details';
+import Booking from './pages/Booking';
 import ErrorPage from './pages/ErrorPage';
 
 // Scroll to top helper on navigation
@@ -24,6 +25,8 @@ export default function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="service/:serviceId" element={<Details />} />
+          <Route path="booking" element={<Booking />} />
+          <Route path="book" element={<Booking />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>

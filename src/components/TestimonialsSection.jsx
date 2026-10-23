@@ -29,7 +29,7 @@ export default function TestimonialsSection() {
           {testimonialsData.map((review) => (
             <div 
               key={review.id}
-              className="bg-[#f8f9ff] border border-[#e5eeff] rounded-2xl p-6 sm:p-7 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between"
+              className="bg-[#f8f9ff] border border-[#e5eeff] rounded-xl p-6 sm:p-7 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between"
             >
               <div>
                 {/* Header: User avatar character + Name & Location + 5 Stars */}

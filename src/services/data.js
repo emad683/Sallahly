@@ -1,3 +1,10 @@
+export const promoVideoConfig = {
+  url: "https://youtu.be/NSAOrGb9orM",
+  id: "NSAOrGb9orM",
+  videoSrc: "/videos/promo.mp4",
+  thumbnail: "https://img.youtube.com/vi/NSAOrGb9orM/maxresdefault.jpg"
+};
+
 export const servicesData = [
   {
     id: "ac",
@@ -15,6 +22,14 @@ export const servicesData = [
       { title: "تسليك الصرف الداخلي", iconName: "water" },
       { title: "تعقيم الفلاتر الداخلية", iconName: "spray-can" },
       { title: "اختبار كفاءة الكومبروسر", iconName: "bolt" }
+    ],
+    commonIssues: [
+      "ضعف التبريد وخروج هواء دافئ",
+      "تسريب مياه من الوحدة الداخلية",
+      "صوت عالي أو اهتزاز في الكومبروسر",
+      "تنظيف وغسيل فلاتر شامل",
+      "رائحة كريهة عند تشغيل التكييف",
+      "فصل مستمر لقاطع الكهرباء"
     ],
     technicianId: "ahmed"
   },
@@ -35,6 +50,14 @@ export const servicesData = [
       { title: "تسليك انسداد الصرف", iconName: "filter" },
       { title: "استبدال الوصلات التالفة", iconName: "screwdriver-wrench" }
     ],
+    commonIssues: [
+      "تسريب مياه في الحمام أو المطبخ",
+      "انسداد في مواسير الصرف أو البالوعات",
+      "تلف أو تسريب في خلاط أو محبس عمومي",
+      "عطل في صندوق الطرد (السيفون)",
+      "تركيب غسالة ملابس أو أطباق",
+      "تأسيس وتعديل خطوط التغذية"
+    ],
     technicianId: "mahmoud"
   },
   {
@@ -54,7 +77,96 @@ export const servicesData = [
       { title: "تغيير القواطع الأوتوماتيكية", iconName: "power-off" },
       { title: "فحص شبكة الإضاءة والبرايز", iconName: "lightbulb" }
     ],
+    commonIssues: [
+      "فصل متكرر لمفتاح الكهرباء العمومي",
+      "ماس كهربائي أو شرز في مفتاح أو بريزة",
+      "انقطاع التيار عن جزء محدد من الشقة",
+      "تجميع وتركيب لوحة قواطع جديدة",
+      "تركيب نجف وإسبوتات إنارة حديثة",
+      "فحص أمان الأحمال للغسالة والتكييف"
+    ],
     technicianId: "karim"
+  },
+  {
+    id: "appliances",
+    title: "صيانة غسالات وسخانات وثلاجات",
+    fullTitle: "كشف وإصلاح الغسالات الأوتوماتيك والثلاجات وسخانات الغاز والكهرباء",
+    price: 220,
+    subtitle: "فحص الأعطال وتوفير قطع غيار أصلية",
+    description: "صيانة فورية لجميع الماركات العالمية والمحلية مع فحص دقيق للكارتات، الموتور، تسريبات الغاز والماء مع كارت ضمان معتمد.",
+    timeEstimate: "فحص فوري خلال 60 دقيقة",
+    badge: "الأكثر طلباً",
+    iconName: "kitchen-set",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80",
+    features: [
+      { title: "كشف أعطال الكارتات والموتور", iconName: "gauge" },
+      { title: "صيانة وتأمين سخانات الغاز والكهرباء", iconName: "fire" },
+      { title: "فحص دورة التبريد وشحن الفريون", iconName: "snowflake" },
+      { title: "استبدال طلمبات ومساعدين الغسالات", iconName: "screwdriver-wrench" }
+    ],
+    commonIssues: [
+      "الغسالة لا تطرد المياه أو لا تعصر",
+      "السخان لا يشعل أو شعلته ضعيفة",
+      "الثلاجة لا تبرد أو تكون ثلج كثيف",
+      "صوت عالي أو اهتزاز عنيف في الغسالة",
+      "تسريب مياه من أسفل الغسالة أو السخان",
+      "عطل في لوحة التحكم الرقمية (الكارتة)"
+    ],
+    technicianId: "tarek"
+  },
+  {
+    id: "carpentry",
+    title: "أعمال نجارة وصيانة أبواب وكالونات",
+    fullTitle: "صيانة الأبواب والشبابيك وتركيب الكالونات والأقفال وصيانة المطابخ",
+    price: 180,
+    subtitle: "تغيير كالونات وصيانة غرف ومطابخ",
+    description: "ضبط وزنية الأبواب الساقطة، استبدال وتركيب الكالونات والأقفال، صيانة مفصلات وسحابات المطابخ والدواليب وتجميع الأثاث باحترافية.",
+    timeEstimate: "فني نجار محترف",
+    badge: "دقة في التركيب",
+    iconName: "hammer",
+    image: "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=800&q=80",
+    features: [
+      { title: "تغيير وتركيب الكالونات والأقفال", iconName: "key" },
+      { title: "وزن وصيانة الأبواب والشبابيك", iconName: "door-open" },
+      { title: "صيانة مفصلات وسحابات المطابخ", iconName: "screwdriver-wrench" },
+      { title: "تجميع وإصلاح الدواليب والغرف", iconName: "hammer" }
+    ],
+    commonIssues: [
+      "باب بيحك في الأرض أو مش بيقفل بسهولة",
+      "تغيير كالون باب شقة مصفح أو باب غرفة",
+      "صيانة مفصلات وسحابات مطبخ ساقطة",
+      "تركيب أرفف أو براويز أو كرتينة ستارة",
+      "إصلاح سرير أو ضلفة دولاب مكسورة",
+      "تغيير أوكر ومقابض الأبواب والشبابيك"
+    ],
+    technicianId: "hassan"
+  },
+  {
+    id: "water-filter",
+    title: "صيانة وتغيير شمعات فلاتر مياه",
+    fullTitle: "فحص نقاء مياه الشرب وتغيير شمعات أصلية وصيانة مواتير الفلاتر 5 و 7 مراحل",
+    price: 150,
+    subtitle: "مراحل 5 و 7 وفحص نسبة الأملاح",
+    description: "كشف جودة المياه بجهاز TDS، استبدال الشمعات المعقمة المطابقة للمواصفات، صيانة موتور وخزان الضغط، وتأمين الوصلات ضد أي تسريب.",
+    timeEstimate: "مياه نقية وصحية",
+    badge: "صحة ونقاء",
+    iconName: "filter",
+    image: "https://images.unsplash.com/photo-1585697348496-e263c9eb6722?auto=format&fit=crop&w=800&q=80",
+    features: [
+      { title: "قياس نسبة الأملاح الذائبة TDS", iconName: "gauge" },
+      { title: "استبدال شمعات أصلية ومطابقة", iconName: "filter" },
+      { title: "فحص وصيانة مضخة وخزان الفلتر", iconName: "bolt" },
+      { title: "عزل ومعالجة تسريبات الوصلات", iconName: "droplet" }
+    ],
+    commonIssues: [
+      "تغيير طقم شمعات الفلتر بالكامل (دوري)",
+      "انخفاض شديد في ضغط وتدفق صنبور الفلتر",
+      "طعم أو رائحة غير طبيعية في مياه الشرب",
+      "تسريب مياه من خراطيم أو هاوسنج الشمعات",
+      "الموتور يعمل باستمرار دون توقف",
+      "نقل وتركيب الفلتر في مكان جديد"
+    ],
+    technicianId: "sameh"
   }
 ];
 
@@ -94,8 +206,57 @@ export const techniciansData = {
     punctualityRate: "100%",
     punctualityText: "دقة متناهية والتزام",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80"
+  },
+  tarek: {
+    id: "tarek",
+    name: "م. طارق الصاوي",
+    role: "مهندس صيانة أجهزة وسخانات معتمد",
+    rating: "4.9",
+    reviewsCount: "285+ طلب ناجح",
+    experience: "11 سنة خبرة",
+    securityStatus: "فيش جنائي معتمد ساري",
+    punctualityRate: "99%",
+    punctualityText: "دقة في المواعيد وتشخيص دقيق",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80"
+  },
+  hassan: {
+    id: "hassan",
+    name: "أ. حسن المنشاوي",
+    role: "فني نجارة وأقفال معتمد",
+    rating: "4.85",
+    reviewsCount: "320+ طلب ناجح",
+    experience: "14 سنة خبرة",
+    securityStatus: "فيش جنائي معتمد ساري",
+    punctualityRate: "97%",
+    punctualityText: "التزام كامل ونظافة مكان العمل",
+    avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80"
+  },
+  sameh: {
+    id: "sameh",
+    name: "م. سامح فهمي",
+    role: "أخصائي معالجة مياه وفلاتر",
+    rating: "4.98",
+    reviewsCount: "390+ طلب ناجح",
+    experience: "9 سنوات خبرة",
+    securityStatus: "فيش جنائي معتمد ساري",
+    punctualityRate: "100%",
+    punctualityText: "دقة متناهية والتزام بالموعد",
+    avatar: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=400&q=80"
   }
 };
+
+export const cairoCities = [
+  "الشيخ زايد",
+  "6 أكتوبر",
+  "التجمع الخامس",
+  "التجمع الأول والرحاب",
+  "مدينتي والشروق",
+  "المعادي والمقطم",
+  "مدينة نصر",
+  "مصر الجديدة",
+  "الدقي والمهندسين",
+  "الهرم وفيصل"
+];
 
 export const trustBadges = [
   { id: 1, title: "فيش جنائي معتمد", iconName: "id-card", sub: "فحص أمني دقيق" },

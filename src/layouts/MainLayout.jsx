@@ -6,6 +6,8 @@ import {
   faWrench, 
   faTag, 
   faCalendarDays, 
+  faCalendarCheck,
+  faPhone,
   faUser 
 } from '@fortawesome/free-solid-svg-icons';
 import Navbar from '../components/Navbar';
@@ -43,36 +45,41 @@ export default function MainLayout() {
           </NavLink>
 
           <a 
-            href="#services"
+            href="/#services"
             className="flex flex-col items-center justify-center min-w-[50px] py-1 text-[#595f64] hover:text-[#082545] transition-colors"
           >
             <FontAwesomeIcon icon={faWrench} className="text-lg mb-1" />
             <span className="text-[10px]">خدماتنا</span>
           </a>
 
+          {/* Central Highlighted Booking Nav Item */}
+          <NavLink 
+            to="/booking"
+            className={({ isActive }) => `flex flex-col items-center justify-center min-w-[58px] py-1 transition-all ${
+              isActive ? 'text-[#082545] font-black' : 'text-[#FF9F1C] hover:text-[#082545]'
+            }`}
+          >
+            <div className="w-8 h-8 rounded-full bg-[#FF9F1C] text-[#082545] flex items-center justify-center text-sm shadow-md mb-0.5">
+              <FontAwesomeIcon icon={faCalendarCheck} />
+            </div>
+            <span className="text-[10px] font-bold text-[#082545]">احجز الآن</span>
+          </NavLink>
+
           <a 
-            href="#pricing"
+            href="/#pricing"
             className="flex flex-col items-center justify-center min-w-[50px] py-1 text-[#595f64] hover:text-[#082545] transition-colors"
           >
             <FontAwesomeIcon icon={faTag} className="text-lg mb-1" />
             <span className="text-[10px]">الأسعار</span>
           </a>
 
-          <button 
-            onClick={() => alert("قريباً: سجل الحجوزات والمتابعة اللحظية للفني")}
+          <a 
+            href="tel:19000"
             className="flex flex-col items-center justify-center min-w-[50px] py-1 text-[#595f64] hover:text-[#082545] transition-colors"
           >
-            <FontAwesomeIcon icon={faCalendarDays} className="text-lg mb-1" />
-            <span className="text-[10px]">حجوزاتي</span>
-          </button>
-
-          <button 
-            onClick={() => alert("قريباً: إدارة الحساب والملف الشخصي")}
-            className="flex flex-col items-center justify-center min-w-[50px] py-1 text-[#595f64] hover:text-[#082545] transition-colors"
-          >
-            <FontAwesomeIcon icon={faUser} className="text-lg mb-1" />
-            <span className="text-[10px]">حسابي</span>
-          </button>
+            <FontAwesomeIcon icon={faPhone} className="text-lg mb-1" />
+            <span className="text-[10px]">19000</span>
+          </a>
 
         </div>
       </nav>

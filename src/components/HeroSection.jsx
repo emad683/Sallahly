@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faCertificate, 
@@ -10,25 +11,54 @@ import {
   faPlay,
   faPause,
   faArrowLeft,
-  faMobileScreen
+  faMobileScreen,
+  faVolumeHigh,
+  faVolumeXmark,
+  faCalendarCheck
 } from '@fortawesome/free-solid-svg-icons';
-import { trustBadges } from '../services/data';
+import { trustBadges, promoVideoConfig } from '../services/data.js';
 
 export default function HeroSection({ onBookClick }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const desktopVideoRef = useRef(null);
+  const mobileVideoRef = useRef(null);
+
+  useEffect(() => {
+    // Attempt auto-play on mount
+    const playPromiseDesktop = desktopVideoRef.current?.play();
+    if (playPromiseDesktop !== undefined) {
+      playPromiseDesktop.catch(() => {
+        // Autoplay policy fallback
+      });
+    }
+    const playPromiseMobile = mobileVideoRef.current?.play();
+    if (playPromiseMobile !== undefined) {
+      playPromiseMobile.catch(() => {
+        // Autoplay policy fallback
+      });
+    }
+  }, []);
 
   const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        videoRef.current.play();
+    const activeVideo = window.innerWidth >= 1024 ? desktopVideoRef.current : mobileVideoRef.current;
+    if (activeVideo) {
+      if (activeVideo.paused) {
+        activeVideo.play();
         setIsPlaying(true);
+      } else {
+        activeVideo.pause();
+        setIsPlaying(false);
       }
-    } else {
-      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const toggleMute = (e) => {
+    e.stopPropagation();
+    const activeVideo = window.innerWidth >= 1024 ? desktopVideoRef.current : mobileVideoRef.current;
+    if (activeVideo) {
+      activeVideo.muted = !activeVideo.muted;
+      setIsMuted(activeVideo.muted);
     }
   };
 
@@ -60,45 +90,37 @@ export default function HeroSection({ onBookClick }) {
       <div className="absolute top-1/2 -left-32 w-96 h-96 rounded-full bg-[#0d3b6e]/40 blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           
           {/* Right Column (Text & CTAs & Badges in RTL) */}
-          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-right gap-6">
-            
-            {/* Top Verified Tag */}
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/15 px-4 py-1.5 rounded-full shadow-inner">
-              <FontAwesomeIcon icon={faCertificate} className="text-[#FF9F1C] text-sm" />
-              <span className="text-xs sm:text-sm font-bold text-white tracking-wide">
-                المنصة الأولى المعتمدة في مصر للصيانة المنزلية
-              </span>
-            </div>
+          <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-right gap-6">
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight lg:leading-tight">
+            <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black text-white leading-tight lg:leading-tight">
               صلحلي…{' '}
               <span className="text-[#FF9F1C] block sm:inline">ضمان، أمان، ودقة</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg text-[#E8EDF3]/90 max-w-2xl leading-relaxed">
+            <p className="text-base sm:text-lg text-[#E8EDF3]/90 max-w-xl leading-relaxed">
               احجز فني صيانة موثوق لبيتك في دقائق. فنيين معتمدين بفيش جنائي، أسعار واضحة ومحددة بدون أي إكراميات، وضمان معتمد 30 يوماً على كل عملية إصلاح.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mt-2">
-              <button 
-                onClick={onBookClick}
-                className="w-full sm:w-auto h-13 px-8 rounded-xl bg-[#FF9F1C] hover:bg-[#ea8d10] text-[#082545] font-extrabold text-base flex items-center justify-center gap-3 shadow-xl shadow-[#FF9F1C]/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+              <Link 
+                to="/booking"
+                className="w-full sm:w-auto h-13 px-8 rounded-lg bg-[#FF9F1C] hover:bg-[#ea8d10] text-[#082545] font-extrabold text-base flex items-center justify-center gap-3 shadow-xl shadow-[#FF9F1C]/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               >
                 <span>احجز دلوقتي</span>
-                <FontAwesomeIcon icon={faBolt} className="text-sm" />
-              </button>
+                <FontAwesomeIcon icon={faCalendarCheck} className="text-sm" />
+              </Link>
 
               <a 
-                href="#how-it-works"
-                className="w-full sm:w-auto h-13 px-8 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-base flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                href="#services"
+                className="w-full sm:w-auto h-13 px-8 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-base flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
-                <span>اعرف أكتر</span>
+                <span>استكشف الخدمات</span>
                 <FontAwesomeIcon icon={faArrowLeft} className="text-xs" />
               </a>
             </div>
@@ -108,9 +130,9 @@ export default function HeroSection({ onBookClick }) {
               {trustBadges.map((badge) => (
                 <div 
                   key={badge.id}
-                  className="flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 p-3 rounded-xl transition-colors backdrop-blur-sm"
+                  className="flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 p-3 rounded-lg transition-colors backdrop-blur-sm"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-[#FF9F1C]/15 text-[#FF9F1C] flex items-center justify-center text-base shrink-0">
+                  <div className="w-9 h-9 rounded-md bg-[#FF9F1C]/15 text-[#FF9F1C] flex items-center justify-center text-base shrink-0">
                     <FontAwesomeIcon icon={getBadgeIcon(badge.iconName)} />
                   </div>
                   <div className="text-right">
@@ -127,102 +149,109 @@ export default function HeroSection({ onBookClick }) {
 
           </div>
 
-          {/* Left Column: Video Mockup (Phone Mockup on Desktop, Clean 16:9 on Mobile) */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center w-full">
+          {/* Left Column: Landscape Phone Mockup (16:9 Orientation on Desktop) */}
+          <div className="lg:col-span-6 flex flex-col items-center justify-center w-full">
             
-            {/* Desktop View: Realistic Mobile Phone Mockup */}
-            <div className="hidden lg:block relative">
+            {/* Desktop View: Rotated Phone in Landscape (16:9) */}
+            <div className="hidden lg:block relative w-full max-w-[530px] xl:max-w-[560px]">
               
-              {/* Outer Phone Frame */}
-              <div className="relative mx-auto w-[310px] rounded-[3.2rem] p-3.5 bg-gradient-to-b from-[#2a374a] via-[#151f2e] to-[#0b1320] border-[4px] border-[#37475d] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_30px_rgba(255,159,28,0.15)]">
+              {/* External hardware buttons (Top edge in landscape) */}
+              <div className="absolute -top-1.5 right-20 w-10 h-1.5 bg-[#3d4f68] rounded-t-sm" />
+              <div className="absolute -top-1.5 right-32 w-10 h-1.5 bg-[#3d4f68] rounded-t-sm" />
+              <div className="absolute -top-1.5 left-20 w-12 h-1.5 bg-[#3d4f68] rounded-t-sm" />
+
+              {/* Outer Phone Frame - Proportional 16:9 Landscape Dimensions */}
+              <div className="relative mx-auto w-full rounded-2xl px-5 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-[#2a374a] via-[#151f2e] to-[#0b1320] border-[4px] border-[#37475d] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_35px_rgba(255,159,28,0.18)] flex items-center">
                 
-                {/* Speaker Notch / Dynamic Island */}
-                <div className="absolute top-5 left-1/2 -translate-x-1/2 w-28 h-5 bg-[#082545] rounded-full z-30 flex items-center justify-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#15202e] border border-white/10" />
-                  <div className="w-8 h-1.5 rounded-full bg-[#15202e]" />
+                {/* Left Bezel Detail */}
+                <div className="w-1.5 h-1.5 rounded-full bg-[#1a2533] border border-white/10 shrink-0 ml-1.5" />
+
+                {/* Inner Screen with Exact 16:9 Aspect Ratio */}
+                <div 
+                  className="relative flex-1 rounded-xl overflow-hidden bg-black aspect-video flex items-center justify-center border border-white/10 group cursor-pointer"
+                  onClick={togglePlay}
+                >
+                  {/* Native HTML5 Video (No YouTube UI/Branding) */}
+                  <video
+                    ref={desktopVideoRef}
+                    src={promoVideoConfig.videoSrc}
+                    poster={promoVideoConfig.thumbnail}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-full object-cover rounded-xl"
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                  />
+
+                  {/* Custom Paused Overlay with Play Icon */}
+                  {!isPlaying && (
+                    <div className="absolute inset-0 bg-[#082545]/45 backdrop-blur-[1px] flex items-center justify-center transition-all animate-in fade-in duration-200">
+                      <div className="w-16 h-16 rounded-full bg-[#FF9F1C] text-[#082545] flex items-center justify-center shadow-xl shadow-[#FF9F1C]/40 hover:scale-110 active:scale-95 transition-transform">
+                        <FontAwesomeIcon icon={faPlay} className="text-2xl ml-0.5" />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Subtle Audio Mute/Unmute Toggle in Corner */}
+                  <button
+                    onClick={toggleMute}
+                    aria-label={isMuted ? "تشغيل الصوت" : "كتم الصوت"}
+                    className="absolute top-3 left-3 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center text-xs transition-opacity opacity-0 group-hover:opacity-100 backdrop-blur-sm z-30"
+                  >
+                    <FontAwesomeIcon icon={isMuted ? faVolumeXmark : faVolumeHigh} />
+                  </button>
+
+                  {/* Landscape Bottom Home Indicator */}
+                  <div className="w-24 h-1 bg-white/40 rounded-full mx-auto absolute bottom-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none" />
                 </div>
 
-                {/* Inner Screen */}
-                <div className="relative rounded-[2.6rem] overflow-hidden bg-black aspect-[9/18] flex flex-col justify-between border border-white/10">
-                  
-                  {/* Status Bar */}
-                  <div className="h-9 px-6 pt-2 flex items-center justify-between text-[11px] text-white/80 font-montserrat z-20">
-                    <span>09:41</span>
-                    <div className="flex items-center gap-1.5">
-                      <FontAwesomeIcon icon={faMobileScreen} className="text-[10px]" />
-                    </div>
-                  </div>
-
-                  {/* 16:9 Video Mockup Inside Phone Screen */}
-                  <div className="relative w-full aspect-video my-auto overflow-hidden bg-slate-900 group cursor-pointer" onClick={togglePlay}>
-                    {/* Background poster/image */}
-                    <img 
-                      src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80" 
-                      alt="فني صيانة صلحلي المعتمد"
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-[#082545]/50 backdrop-blur-[1px] flex flex-col items-center justify-center p-4 text-center">
-                      <button 
-                        aria-label={isPlaying ? "إيقاف مؤقت" : "تشغيل الفيديو"}
-                        className="w-14 h-14 rounded-full bg-[#FF9F1C] text-[#082545] flex items-center justify-center shadow-lg shadow-[#FF9F1C]/40 group-hover:scale-110 transition-transform"
-                      >
-                        <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} className="text-xl ml-0.5" />
-                      </button>
-                      <span className="text-xs font-bold text-white mt-3 drop-shadow">
-                        فيديو صلحلي التعريفي (16:9)
-                      </span>
-                      <span className="text-[10px] text-white/80 mt-0.5">
-                        اضغط للمشاهدة
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* In-app mockup bottom bar */}
-                  <div className="p-4 bg-[#082545]/90 border-t border-white/10 flex items-center justify-between text-xs text-white/90">
-                    <span className="font-bold">تطبيق صلحلي مصر</span>
-                    <span className="text-[10px] text-[#FF9F1C] bg-white/10 px-2 py-0.5 rounded-full font-semibold">
-                      متاح الآن
-                    </span>
-                  </div>
-
-                  {/* Home indicator bar */}
-                  <div className="w-28 h-1 bg-white/40 rounded-full mx-auto mb-2" />
+                {/* Right Bezel Details (Speaker Slit + Camera Punch-hole on the bezel) */}
+                <div className="flex flex-col items-center justify-center gap-2 shrink-0 mr-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#0a1017] border border-white/20 shadow-inner" />
+                  <div className="w-1 h-8 rounded-full bg-[#1e2a38] border border-white/5" />
                 </div>
-              </div>
-
-              {/* Tag below desktop mockup */}
-              <div className="text-center mt-4">
-                <span className="inline-flex items-center gap-1.5 text-xs text-[#E8EDF3]/70 font-semibold">
-                  <FontAwesomeIcon icon={faMobileScreen} className="text-[#FF9F1C]" />
-                  شاهد تجربة الحجز من هاتفك المحمول
-                </span>
               </div>
             </div>
 
             {/* Mobile View: High Quality 16:9 Video Card */}
             <div className="block lg:hidden w-full max-w-md mx-auto">
               <div 
-                className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/15 group cursor-pointer bg-slate-900"
+                className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border border-white/15 bg-slate-900 group cursor-pointer"
                 onClick={togglePlay}
               >
-                <img 
-                  src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80" 
-                  alt="فني صيانة صلحلي"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                {/* Native HTML5 Video for Mobile */}
+                <video
+                  ref={mobileVideoRef}
+                  src={promoVideoConfig.videoSrc}
+                  poster={promoVideoConfig.thumbnail}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-full object-cover rounded-xl"
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
                 />
-                <div className="absolute inset-0 bg-[#082545]/55 backdrop-blur-[1px] flex flex-col items-center justify-center p-4 text-center">
-                  <button 
-                    aria-label={isPlaying ? "إيقاف مؤقت" : "تشغيل الفيديو"}
-                    className="w-14 h-14 rounded-full bg-[#FF9F1C] text-[#082545] flex items-center justify-center shadow-lg shadow-[#FF9F1C]/40 group-hover:scale-110 transition-transform"
-                  >
-                    <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} className="text-xl ml-0.5" />
-                  </button>
-                  <span className="text-xs font-bold text-white mt-2.5 drop-shadow">
-                    شاهد كيف نوفر لك تجربة صيانة آمنة
-                  </span>
-                </div>
+
+                {/* Custom Paused Overlay with Play Icon */}
+                {!isPlaying && (
+                  <div className="absolute inset-0 bg-[#082545]/45 backdrop-blur-[1px] flex items-center justify-center transition-all animate-in fade-in duration-200">
+                    <div className="w-14 h-14 rounded-full bg-[#FF9F1C] text-[#082545] flex items-center justify-center shadow-lg shadow-[#FF9F1C]/40 active:scale-95 transition-transform">
+                      <FontAwesomeIcon icon={faPlay} className="text-xl ml-0.5" />
+                    </div>
+                  </div>
+                )}
+
+                {/* Subtle Audio Mute/Unmute Toggle in Corner */}
+                <button
+                  onClick={toggleMute}
+                  aria-label={isMuted ? "تشغيل الصوت" : "كتم الصوت"}
+                  className="absolute top-2.5 left-2.5 w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center text-[10px] backdrop-blur-sm z-30"
+                >
+                  <FontAwesomeIcon icon={isMuted ? faVolumeXmark : faVolumeHigh} />
+                </button>
               </div>
             </div>
 

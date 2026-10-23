@@ -49,17 +49,17 @@ export default function WhyUs() {
           {whyUsData.map((item) => (
             <div 
               key={item.id}
-              className="bg-white/10 hover:bg-white/15 border border-white/15 backdrop-blur-md rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:border-[#FF9F1C]/40 group"
+              className="bg-white/10 hover:bg-white/15 border border-white/15 backdrop-blur-md rounded-xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:border-[#FF9F1C]/40 group"
             >
               <div>
                 {/* Header Icon + Pill */}
                 <div className="flex items-center justify-between mb-5">
-                  <div className="w-12 h-12 rounded-xl bg-[#FF9F1C] text-[#082545] flex items-center justify-center text-xl shadow-lg shadow-[#FF9F1C]/25 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-lg bg-[#FF9F1C] text-[#082545] flex items-center justify-center text-xl shadow-lg shadow-[#FF9F1C]/25 group-hover:scale-110 transition-transform">
                     <FontAwesomeIcon icon={getFeatureIcon(item.iconName)} />
                   </div>
                 </div>
 
-                <div className="inline-block bg-[#FF9F1C]/20 border border-[#FF9F1C]/30 text-[#ffb86b] text-[11px] font-bold px-2.5 py-1 rounded-full mb-3">
+                <div className="inline-block bg-[#FF9F1C]/20 border border-[#FF9F1C]/30 text-[#ffb86b] text-[11px] font-bold px-2.5 py-1 rounded-md mb-3">
                   {item.badge}
                 </div>
 

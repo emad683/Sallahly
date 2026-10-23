@@ -13,7 +13,7 @@ export default function TechnicianCard({ technician }) {
   if (!technician) return null;
 
   return (
-    <div className="bg-white rounded-2xl border border-[#dfe9fa] p-5 sm:p-6 shadow-sm flex flex-col gap-4 relative overflow-hidden">
+    <div className="bg-white rounded-xl border border-[#dfe9fa] p-5 sm:p-6 shadow-sm flex flex-col gap-4 relative overflow-hidden">
       
       {/* Top Header: Avatar + Info + Experience Badge */}
       <div className="flex items-start justify-between gap-4">
@@ -59,7 +59,7 @@ export default function TechnicianCard({ technician }) {
         </div>
 
         {/* Experience Pill */}
-        <div className="bg-[#bdd6ff]/40 text-[#082545] border border-[#bdd6ff] px-3 py-1 rounded-full text-center shrink-0">
+        <div className="bg-[#bdd6ff]/40 text-[#082545] border border-[#bdd6ff] px-3 py-1 rounded-md text-center shrink-0">
           <span className="text-xs font-bold font-montserrat">
             {technician.experience}
           </span>
@@ -71,7 +71,7 @@ export default function TechnicianCard({ technician }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
         
         {/* Security Badge */}
-        <div className="flex items-center gap-3 p-3 rounded-xl bg-[#eef4ff] border border-[#dfe9fa]">
+        <div className="flex items-center gap-3 p-3 rounded-lg bg-[#eef4ff] border border-[#dfe9fa]">
           <div className="w-9 h-9 rounded-full bg-[#ffdcbc] text-[#683d00] flex items-center justify-center text-sm shrink-0">
             <FontAwesomeIcon icon={faShieldHalved} />
           </div>
@@ -86,7 +86,7 @@ export default function TechnicianCard({ technician }) {
         </div>
 
         {/* Punctuality Badge */}
-        <div className="flex items-center gap-3 p-3 rounded-xl bg-[#eef4ff] border border-[#dfe9fa]">
+        <div className="flex items-center gap-3 p-3 rounded-lg bg-[#eef4ff] border border-[#dfe9fa]">
           <div className="w-9 h-9 rounded-full bg-[#bdd6ff] text-[#082545] flex items-center justify-center text-sm shrink-0">
             <FontAwesomeIcon icon={faClock} />
           </div>

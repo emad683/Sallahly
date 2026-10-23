@@ -45,12 +45,12 @@ export default function HowItWorks() {
           {stepsData.map((step) => (
             <div 
               key={step.step}
-              className="relative bg-[#f8f9ff] border border-[#e5eeff] rounded-2xl p-6 flex flex-col justify-between hover:border-[#FF9F1C]/40 hover:shadow-lg transition-all duration-300 group"
+              className="relative bg-[#f8f9ff] border border-[#e5eeff] rounded-xl p-6 flex flex-col justify-between hover:border-[#FF9F1C]/40 hover:shadow-lg transition-all duration-300 group"
             >
               <div>
                 {/* Number & Icon */}
                 <div className="flex items-center justify-between mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-[#082545] text-white flex items-center justify-center text-lg font-black font-montserrat shadow-md group-hover:bg-[#FF9F1C] group-hover:text-[#082545] transition-colors">
+                  <div className="w-12 h-12 rounded-lg bg-[#082545] text-white flex items-center justify-center text-lg font-black font-montserrat shadow-md group-hover:bg-[#FF9F1C] group-hover:text-[#082545] transition-colors">
                     {step.step}
                   </div>
                   <div className="w-10 h-10 rounded-full bg-white border border-[#e5eeff] text-[#FF9F1C] flex items-center justify-center text-base">

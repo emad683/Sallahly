@@ -4,7 +4,7 @@ import { faCircleExclamation, faRotateRight } from '@fortawesome/free-solid-svg-
 
 export default function ErrorMessage({ message = 'حدث خطأ أثناء تحميل البيانات', onRetry }) {
   return (
-    <div className="bg-[#ffdad6] border border-[#ba1a1a]/30 text-[#93000a] p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 max-w-lg mx-auto">
+    <div className="bg-[#ffdad6] border border-[#ba1a1a]/30 text-[#93000a] p-5 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4 max-w-lg mx-auto shadow-sm">
       <div className="flex items-center gap-3">
         <FontAwesomeIcon icon={faCircleExclamation} className="text-xl text-[#ba1a1a] shrink-0" />
         <span className="text-xs sm:text-sm font-bold">{message}</span>
@@ -13,7 +13,7 @@ export default function ErrorMessage({ message = 'حدث خطأ أثناء تح�
       {onRetry && (
         <button
           onClick={onRetry}
-          className="h-9 px-4 rounded-xl bg-[#ba1a1a] hover:bg-[#93000a] text-white text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer"
+          className="h-9 px-4 rounded-lg bg-[#ba1a1a] hover:bg-[#93000a] text-white text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer"
         >
           <FontAwesomeIcon icon={faRotateRight} />
           <span>إعادة المحاولة</span>

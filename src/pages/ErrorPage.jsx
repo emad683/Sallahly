@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWrench, faHouse, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import logoIcon from '../assets/images/logo-icon.svg';
 
 export default function ErrorPage() {
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-16">
-      <div className="w-20 h-20 rounded-3xl bg-[#e5eeff] text-[#082545] flex items-center justify-center text-3xl mb-6 shadow-md border border-[#dfe9fa]">
-        <FontAwesomeIcon icon={faWrench} className="animate-bounce" />
+      <div className="w-20 h-20 rounded-xl bg-[#e5eeff] p-3.5 mb-6 shadow-md border border-[#dfe9fa] flex items-center justify-center">
+        <img src={logoIcon} alt="صلحلي" className="w-full h-full object-contain" />
       </div>
 
       <div className="inline-flex items-center gap-2 bg-[#ffdad6] text-[#ba1a1a] px-3.5 py-1 rounded-full text-xs font-bold mb-3">
@@ -25,7 +26,7 @@ export default function ErrorPage() {
 
       <Link
         to="/"
-        className="h-12 px-6 rounded-xl bg-[#082545] hover:bg-[#0d3b6e] text-white font-bold text-sm flex items-center gap-2 shadow-lg transition-all"
+        className="h-12 px-6 rounded-lg bg-[#082545] hover:bg-[#0d3b6e] text-white font-bold text-sm flex items-center gap-2 shadow-lg transition-all"
       >
         <FontAwesomeIcon icon={faHouse} />
         <span>العودة إلى الصفحة الرئيسية</span>

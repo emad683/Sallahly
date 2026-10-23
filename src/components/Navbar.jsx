@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faWrench, 
   faBars, 
   faXmark, 
   faCalendarCheck,
   faPhone
 } from '@fortawesome/free-solid-svg-icons';
+import logoWhite from '../assets/images/logo-icon-white.svg';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -33,16 +33,12 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-[#FF9F1C] flex items-center justify-center text-[#082545] shadow-md shadow-[#FF9F1C]/30 group-hover:scale-105 transition-transform">
-              <FontAwesomeIcon icon={faWrench} className="text-xl" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-black text-white tracking-wide">صلحلي</span>
-              <span className="text-[10px] text-[#E8EDF3]/70 font-montserrat font-semibold tracking-widest uppercase -mt-1">
-                Sallahly
-              </span>
-            </div>
+          <Link to="/" className="flex items-center group py-2">
+            <img 
+              src={logoWhite} 
+              alt="صلحلي Sallahly" 
+              className="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-105" 
+            />
           </Link>
 
           {/* Desktop Nav Links */}
@@ -93,31 +89,31 @@ export default function Navbar() {
             >
               <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs">
                 <FontAwesomeIcon icon={faPhone} />
-              </div>
-              <span>19000</span>
+              </div>    
             </a>
 
-            <button 
-              onClick={() => handleNavClick('services')}
-              className="h-11 px-6 rounded-xl bg-[#FF9F1C] hover:bg-[#ea8d10] text-[#082545] font-bold text-sm flex items-center gap-2 shadow-lg shadow-[#FF9F1C]/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+            <Link 
+              to="/booking"
+              className="h-11 px-6 rounded-lg bg-[#FF9F1C] hover:bg-[#ea8d10] text-[#082545] font-bold text-sm flex items-center gap-2 shadow-lg shadow-[#FF9F1C]/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
             >
               <FontAwesomeIcon icon={faCalendarCheck} />
               <span>احجز الآن</span>
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-3">
-            <button 
-              onClick={() => handleNavClick('services')}
+            <Link 
+              to="/booking"
               className="h-9 px-3.5 rounded-lg bg-[#FF9F1C] text-[#082545] font-bold text-xs flex items-center gap-1.5 shadow-sm"
             >
+              <FontAwesomeIcon icon={faCalendarCheck} className="text-[11px]" />
               <span>احجز</span>
-            </button>
+            </Link>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-10 h-10 rounded-xl bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="w-10 h-10 rounded-lg bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors"
               aria-label="القائمة"
             >
               <FontAwesomeIcon icon={mobileMenuOpen ? faXmark : faBars} className="text-lg" />
@@ -167,16 +163,17 @@ export default function Navbar() {
           </button>
 
           <div className="pt-2 flex flex-col gap-3">
-            <button 
-              onClick={() => handleNavClick('services')}
-              className="w-full h-12 rounded-xl bg-[#FF9F1C] text-[#082545] font-bold text-sm flex items-center justify-center gap-2 shadow-lg"
+            <Link 
+              to="/booking"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full h-12 rounded-lg bg-[#FF9F1C] text-[#082545] font-bold text-sm flex items-center justify-center gap-2 shadow-lg"
             >
               <FontAwesomeIcon icon={faCalendarCheck} />
               <span>احجز موعد فني صيانة</span>
-            </button>
+            </Link>
             <a 
               href="tel:19000"
-              className="w-full h-11 rounded-xl bg-white/10 text-white font-semibold text-sm flex items-center justify-center gap-2"
+              className="w-full h-11 rounded-lg bg-white/10 text-white font-semibold text-sm flex items-center justify-center gap-2"
             >
               <FontAwesomeIcon icon={faPhone} />
               <span>اتصل بنا: 19000</span>

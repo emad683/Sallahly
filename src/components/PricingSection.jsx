@@ -36,7 +36,7 @@ export default function PricingSection() {
           {pricingPlans.map((plan) => (
             <div 
               key={plan.id}
-              className="bg-white rounded-2xl border border-[#dfe9fa] p-6 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between"
+              className="bg-white rounded-xl border border-[#dfe9fa] p-6 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
@@ -80,8 +80,8 @@ export default function PricingSection() {
               </div>
 
               <Link
-                to={`/service/${plan.serviceId}`}
-                className="w-full h-11 rounded-xl bg-[#082545] hover:bg-[#0d3b6e] text-white font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                to={`/booking?service=${plan.serviceId}`}
+                className="w-full h-11 rounded-lg bg-[#082545] hover:bg-[#0d3b6e] text-white font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
                 <span>احجز الآن</span>
                 <FontAwesomeIcon icon={faArrowLeft} className="text-[10px]" />
@@ -91,9 +91,9 @@ export default function PricingSection() {
         </div>
 
         {/* Golden Pricing Policy Box */}
-        <div className="bg-[#e5eeff] border border-[#bdd6ff] rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto shadow-sm">
+        <div className="bg-[#e5eeff] border border-[#bdd6ff] rounded-xl p-6 sm:p-8 max-w-4xl mx-auto shadow-sm">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-lg bg-[#FF9F1C] text-[#082545] flex items-center justify-center text-base">
+            <div className="w-9 h-9 rounded-md bg-[#FF9F1C] text-[#082545] flex items-center justify-center text-base">
               <FontAwesomeIcon icon={faScaleBalanced} />
             </div>
             <h3 className="text-lg font-bold text-[#082545]">

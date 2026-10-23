@@ -12,6 +12,7 @@ import {
   faClock, 
   faReceipt, 
   faCalendarDays,
+  faCalendarCheck,
   faCircleCheck,
   faHeadset,
   faAward,
@@ -25,7 +26,12 @@ import {
   faScrewdriverWrench,
   faScaleBalanced,
   faPowerOff,
-  faLightbulb
+  faLightbulb,
+  faHammer,
+  faKey,
+  faDoorOpen,
+  faDroplet,
+  faFire
 } from '@fortawesome/free-solid-svg-icons';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { servicesData, techniciansData } from '../services/data';
@@ -63,6 +69,11 @@ export default function Details() {
       case 'scale-balanced': return faScaleBalanced;
       case 'power-off': return faPowerOff;
       case 'lightbulb': return faLightbulb;
+      case 'hammer': return faHammer;
+      case 'key': return faKey;
+      case 'door-open': return faDoorOpen;
+      case 'droplet': return faDroplet;
+      case 'fire': return faFire;
       default: return faCircleCheck;
     }
   };
@@ -77,7 +88,7 @@ export default function Details() {
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-sm font-bold text-[#082545] hover:text-[#FF9F1C] transition-colors cursor-pointer"
           >
-            <div className="w-9 h-9 rounded-xl bg-white border border-[#dfe9fa] flex items-center justify-center shadow-sm">
+            <div className="w-9 h-9 rounded-lg bg-white border border-[#dfe9fa] flex items-center justify-center shadow-sm">
               <FontAwesomeIcon icon={faArrowRight} />
             </div>
             <span>العودة للرئيسية</span>
@@ -89,10 +100,10 @@ export default function Details() {
         </div>
 
         {/* Visual Hero / Service Header Card */}
-        <div className="relative overflow-hidden rounded-2xl bg-white border border-[#dfe9fa] shadow-sm p-4 sm:p-6 mb-6 flex flex-col gap-5">
+        <div className="relative overflow-hidden rounded-xl bg-white border border-[#dfe9fa] shadow-sm p-4 sm:p-6 mb-6 flex flex-col gap-5">
           
           {/* Media preview & Badges */}
-          <div className="relative w-full h-56 sm:h-72 rounded-xl overflow-hidden shadow-sm">
+          <div className="relative w-full h-56 sm:h-72 rounded-lg overflow-hidden shadow-sm">
             <img 
               src={service.image} 
               alt={service.fullTitle}
@@ -108,12 +119,12 @@ export default function Details() {
 
             {/* Bottom Badges Row */}
             <div className="absolute bottom-3 right-3 left-3 flex justify-between items-end gap-2">
-              <div className="flex items-center gap-2 bg-[#082545]/90 text-white px-3 py-1.5 rounded-xl border border-white/10 text-xs font-semibold backdrop-blur-sm">
+              <div className="flex items-center gap-2 bg-[#082545]/90 text-white px-3 py-1.5 rounded-lg border border-white/10 text-xs font-semibold backdrop-blur-sm">
                 <FontAwesomeIcon icon={faShieldHalved} className="text-[#FF9F1C]" />
                 <span>ضمان صلحلي 30 يوماً</span>
               </div>
 
-              <div className="bg-[#FF9F1C] text-[#082545] font-black text-xl sm:text-2xl px-4 py-1.5 rounded-xl shadow-md">
+              <div className="bg-[#FF9F1C] text-[#082545] font-black text-xl sm:text-2xl px-4 py-1.5 rounded-lg shadow-md">
                 <span>{service.price}</span>
                 <span className="text-xs font-bold mr-1">ج.م</span>
               </div>
@@ -135,9 +146,9 @@ export default function Details() {
             {service.features.map((feat, idx) => (
               <div 
                 key={idx} 
-                className="flex items-center gap-2.5 p-3 rounded-xl bg-[#f8f9ff] border border-[#e5eeff]"
+                className="flex items-center gap-2.5 p-3 rounded-lg bg-[#f8f9ff] border border-[#e5eeff]"
               >
-                <div className="w-7 h-7 rounded-lg bg-[#e5eeff] text-[#082545] flex items-center justify-center text-xs shrink-0">
+                <div className="w-7 h-7 rounded-md bg-[#e5eeff] text-[#082545] flex items-center justify-center text-xs shrink-0">
                   <FontAwesomeIcon icon={getFeatureIcon(feat.iconName)} />
                 </div>
                 <span className="text-xs font-bold text-[#121c28] truncate">
@@ -163,7 +174,7 @@ export default function Details() {
         </div>
 
         {/* Transparent Pricing Breakdown Section */}
-        <div className="bg-[#eef4ff] rounded-2xl border border-[#bdd6ff] p-5 sm:p-6 mb-6 flex flex-col gap-4 shadow-sm">
+        <div className="bg-[#eef4ff] rounded-xl border border-[#bdd6ff] p-5 sm:p-6 mb-6 flex flex-col gap-4 shadow-sm">
           
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-[#082545]">
@@ -180,7 +191,7 @@ export default function Details() {
           <div className="space-y-4 pt-2">
             
             {/* Step 1 */}
-            <div className="flex items-start gap-3 bg-white p-3.5 rounded-xl border border-[#dfe9fa]">
+            <div className="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-[#dfe9fa]">
               <div className="w-7 h-7 rounded-full bg-[#FF9F1C] text-[#082545] flex items-center justify-center text-xs font-black shrink-0 mt-0.5 font-montserrat">
                 1
               </div>
@@ -196,7 +207,7 @@ export default function Details() {
             </div>
 
             {/* Step 2 */}
-            <div className="flex items-start gap-3 bg-white p-3.5 rounded-xl border border-[#dfe9fa]">
+            <div className="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-[#dfe9fa]">
               <div className="w-7 h-7 rounded-full bg-[#bdd6ff] text-[#082545] flex items-center justify-center text-xs font-black shrink-0 mt-0.5 font-montserrat">
                 2
               </div>
@@ -211,7 +222,7 @@ export default function Details() {
             </div>
 
             {/* Step 3 */}
-            <div className="flex items-start gap-3 bg-white p-3.5 rounded-xl border border-[#dfe9fa]">
+            <div className="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-[#dfe9fa]">
               <div className="w-7 h-7 rounded-full bg-[#bdd6ff] text-[#082545] flex items-center justify-center text-xs font-black shrink-0 mt-0.5 font-montserrat">
                 3
               </div>
@@ -220,16 +231,16 @@ export default function Details() {
                   طرق دفع مرنة بعد التجربة
                 </span>
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-2.5 py-1 bg-[#f8f9ff] border border-[#dfe9fa] rounded-lg text-[11px] font-bold text-[#082545]">
+                  <span className="px-2.5 py-1 bg-[#f8f9ff] border border-[#dfe9fa] rounded-md text-[11px] font-bold text-[#082545]">
                     كاش
                   </span>
-                  <span className="px-2.5 py-1 bg-[#f8f9ff] border border-[#dfe9fa] rounded-lg text-[11px] font-bold text-[#082545]">
+                  <span className="px-2.5 py-1 bg-[#f8f9ff] border border-[#dfe9fa] rounded-md text-[11px] font-bold text-[#082545]">
                     فوري
                   </span>
-                  <span className="px-2.5 py-1 bg-[#f8f9ff] border border-[#dfe9fa] rounded-lg text-[11px] font-bold text-[#082545]">
+                  <span className="px-2.5 py-1 bg-[#f8f9ff] border border-[#dfe9fa] rounded-md text-[11px] font-bold text-[#082545]">
                     ميزة
                   </span>
-                  <span className="px-2.5 py-1 bg-[#f8f9ff] border border-[#dfe9fa] rounded-lg text-[11px] font-bold text-[#082545]">
+                  <span className="px-2.5 py-1 bg-[#f8f9ff] border border-[#dfe9fa] rounded-md text-[11px] font-bold text-[#082545]">
                     فيزا / ماستركارد
                   </span>
                 </div>
@@ -243,8 +254,8 @@ export default function Details() {
         {/* Guarantee & Peace of Mind Highlights */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           
-          <div className="bg-white border border-[#dfe9fa] p-4 rounded-xl flex items-start gap-3 shadow-sm">
-            <div className="w-9 h-9 rounded-xl bg-[#ffdcbc] text-[#683d00] flex items-center justify-center text-sm shrink-0">
+          <div className="bg-white border border-[#dfe9fa] p-4 rounded-lg flex items-start gap-3 shadow-sm">
+            <div className="w-9 h-9 rounded-lg bg-[#ffdcbc] text-[#683d00] flex items-center justify-center text-sm shrink-0">
               <FontAwesomeIcon icon={faAward} />
             </div>
             <div>
@@ -257,8 +268,8 @@ export default function Details() {
             </div>
           </div>
 
-          <div className="bg-white border border-[#dfe9fa] p-4 rounded-xl flex items-start gap-3 shadow-sm">
-            <div className="w-9 h-9 rounded-xl bg-[#bdd6ff] text-[#082545] flex items-center justify-center text-sm shrink-0">
+          <div className="bg-white border border-[#dfe9fa] p-4 rounded-lg flex items-start gap-3 shadow-sm">
+            <div className="w-9 h-9 rounded-lg bg-[#bdd6ff] text-[#082545] flex items-center justify-center text-sm shrink-0">
               <FontAwesomeIcon icon={faHeadset} />
             </div>
             <div>
@@ -285,47 +296,28 @@ export default function Details() {
             target="_blank"
             rel="noreferrer"
             aria-label="محادثة واتساب سريعة"
-            className="w-12 h-12 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white flex items-center justify-center text-xl shrink-0 shadow-md transition-colors"
+            className="w-12 h-12 rounded-lg bg-[#25D366] hover:bg-[#20ba59] text-white flex items-center justify-center text-xl shrink-0 shadow-md transition-colors"
           >
             <FontAwesomeIcon icon={faWhatsapp} />
           </a>
 
           {/* Main Booking Button */}
-          <button
-            onClick={handleBooking}
-            disabled={bookingStatus === 'loading'}
-            className={`flex-1 h-12 sm:h-13 rounded-xl font-bold flex items-center justify-between px-5 transition-all shadow-lg cursor-pointer ${
-              bookingStatus === 'success'
-                ? 'bg-green-600 text-white'
-                : 'bg-[#FF9F1C] hover:bg-[#ea8d10] text-[#082545] active:scale-[0.98]'
-            }`}
+          <Link
+            to={`/booking?service=${service.id}`}
+            className="flex-1 h-12 sm:h-13 rounded-lg font-bold flex items-center justify-between px-5 transition-all shadow-lg cursor-pointer bg-[#FF9F1C] hover:bg-[#ea8d10] text-[#082545] active:scale-[0.98]"
           >
-            {bookingStatus === 'loading' ? (
-              <div className="flex items-center justify-center w-full gap-2 text-sm font-bold">
-                <FontAwesomeIcon icon={faSpinner} className="animate-spin text-base" />
-                <span>جاري تثبيت الموعد المعتمد...</span>
-              </div>
-            ) : bookingStatus === 'success' ? (
-              <div className="flex items-center justify-center w-full gap-2 text-sm font-bold">
-                <FontAwesomeIcon icon={faCircleCheck} className="text-lg" />
-                <span>تم تأكيد حجز الزيارة بنجاح! سيتصل بك الفني الآن.</span>
-              </div>
-            ) : (
-              <>
-                <div className="flex items-center gap-2">
-                  <FontAwesomeIcon icon={faCalendarDays} className="text-base" />
-                  <span className="text-xs sm:text-sm font-black">
-                    احجز زيارة {technician.name.split(' ')[1] || 'الفني'} دلوقتي
-                  </span>
-                </div>
+            <div className="flex items-center gap-2">
+              <FontAwesomeIcon icon={faCalendarCheck} className="text-base" />
+              <span className="text-xs sm:text-sm font-black">
+                احجز وتأكيد موعد الزيارة الآن
+              </span>
+            </div>
 
-                <div className="flex items-baseline gap-1 bg-[#082545] text-white px-3 py-1 rounded-lg text-xs font-montserrat font-bold">
-                  <span>{service.price}</span>
-                  <span className="text-[10px] font-cairo">ج.م</span>
-                </div>
-              </>
-            )}
-          </button>
+            <div className="flex items-baseline gap-1 bg-[#082545] text-white px-3 py-1 rounded-lg text-xs font-montserrat font-bold">
+              <span>{service.price}</span>
+              <span className="text-[10px] font-cairo">ج.م</span>
+            </div>
+          </Link>
 
         </div>
       </div>
