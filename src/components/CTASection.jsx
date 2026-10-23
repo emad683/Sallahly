@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Logo from '../../public/logo-icon.svg'
+import Logo from '../assets/images/logo-icon.svg';
 import {
     faWrench,
     faArrowLeft,
