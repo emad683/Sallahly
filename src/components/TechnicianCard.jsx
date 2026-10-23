@@ -23,6 +23,10 @@ export default function TechnicianCard({ technician }) {
             <img 
               src={technician.avatar} 
               alt={technician.name}
+              width="64"
+              height="64"
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
             />
             <div className="absolute bottom-0 right-0 bg-[#FF9F1C] text-[#082545] w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shadow">

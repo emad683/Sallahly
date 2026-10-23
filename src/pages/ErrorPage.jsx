@@ -8,7 +8,7 @@ export default function ErrorPage() {
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-16">
       <div className="w-20 h-20 rounded-xl bg-[#e5eeff] p-3.5 mb-6 shadow-md border border-[#dfe9fa] flex items-center justify-center">
-        <img src={logoIcon} alt="صلحلي" className="w-full h-full object-contain" />
+        <img src={logoIcon} alt="صلحلي" width="80" height="80" className="w-full h-full object-contain" />
       </div>
 
       <div className="inline-flex items-center gap-2 bg-[#ffdad6] text-[#ba1a1a] px-3.5 py-1 rounded-full text-xs font-bold mb-3">

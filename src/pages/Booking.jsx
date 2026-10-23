@@ -870,6 +870,10 @@ export default function Booking() {
                   <img
                     src={assignedTech.avatar}
                     alt={assignedTech.name}
+                    width="52"
+                    height="52"
+                    loading="lazy"
+                    decoding="async"
                     className="w-13 h-13 rounded-lg object-cover border-2 border-[#FF9F1C]"
                   />
                   <div>

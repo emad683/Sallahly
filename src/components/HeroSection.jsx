@@ -188,7 +188,9 @@ export default function HeroSection({ onBookClick }) {
                     muted={isMuted}
                     loop
                     playsInline
-                    preload="auto"
+                    preload="metadata"
+                    width="640"
+                    height="360"
                     className="w-full h-full object-cover rounded-xl"
                     onPlay={() => setIsPlaying(true)}
                     onPause={() => setIsPlaying(false)}
@@ -245,7 +247,9 @@ export default function HeroSection({ onBookClick }) {
                   muted={isMuted}
                   loop
                   playsInline
-                  preload="auto"
+                  preload="metadata"
+                  width="448"
+                  height="252"
                   className="w-full h-full object-cover rounded-xl"
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}

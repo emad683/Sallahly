@@ -41,6 +41,8 @@ export default function FAQSection() {
                 }`}
               >
                 <button
+                  type="button"
+                  aria-expanded={isOpen}
                   onClick={() => toggleAccordion(faq.id)}
                   className="w-full p-5 sm:p-6 text-right flex items-center justify-between gap-4 font-bold text-base sm:text-lg text-[#121c28] hover:text-[#082545] transition-colors cursor-pointer"
                 >

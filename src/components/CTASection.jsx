@@ -16,7 +16,7 @@ export default function CTASection({ onBookClick }) {
 
                 {/* Floating Icon Box */}
                 <div className="w-18 h-18 rounded-lg bg-white/30 border border-white/20 flex items-center justify-center text-2xl mb-6">
-                    <img src={Logo} alt="" />
+                    <img src={Logo} alt="صلحلي" width="48" height="48" className="w-12 h-12 object-contain" />
                 </div>
 
                 {/* Title */}

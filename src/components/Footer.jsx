@@ -24,10 +24,14 @@ export default function Footer() {
           
           {/* Brand Info (2 cols) */}
           <div className="lg:col-span-2 flex flex-col gap-4">
-            <Link to="/" className="inline-block group mb-1">
+            <Link to="/" className="inline-block group mb-1" aria-label="صلحلي - الصفحة الرئيسية">
               <img 
                 src={logoFullWhite} 
                 alt="صلحلي Sallahly - الخدمات المنزلية والصيانة السريعة" 
+                width="200"
+                height="64"
+                loading="lazy"
+                decoding="async"
                 className="h-14 sm:h-16 w-auto object-contain transition-transform duration-200 group-hover:scale-105" 
               />
             </Link>
@@ -40,7 +44,8 @@ export default function Footer() {
               <a
                 href="https://wa.me/201000000000"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
+                aria-label="تواصل مع صلحلي عبر واتساب"
                 className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md transition-colors"
               >
                 <FontAwesomeIcon icon={faWhatsapp} className="text-base" />
@@ -49,6 +54,7 @@ export default function Footer() {
 
               <a
                 href="tel:19000"
+                aria-label="اتصل بالخط الساخن لصلحلي 19000"
                 className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors"
               >
                 <FontAwesomeIcon icon={faPhone} className="text-xs" />
@@ -96,23 +102,29 @@ export default function Footer() {
             <h4 className="text-base font-bold text-white mb-2">تابعنا وتواصل معنا</h4>
             <div className="flex items-center gap-3 mb-2">
               <a 
-                href="#" 
+                href="https://facebook.com" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#FF9F1C] hover:text-[#082545] flex items-center justify-center text-sm transition-all"
-                aria-label="فيسبوك"
+                aria-label="صفحة صلحلي على فيسبوك"
               >
                 <FontAwesomeIcon icon={faFacebookF} />
               </a>
               <a 
-                href="#" 
+                href="https://instagram.com" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#FF9F1C] hover:text-[#082545] flex items-center justify-center text-sm transition-all"
-                aria-label="إنستغرام"
+                aria-label="صفحة صلحلي على إنستغرام"
               >
                 <FontAwesomeIcon icon={faInstagram} />
               </a>
               <a 
-                href="#" 
+                href="https://wa.me/201000000000" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#25D366] hover:text-white flex items-center justify-center text-sm transition-all"
-                aria-label="واتساب"
+                aria-label="محادثة صلحلي عبر واتساب"
               >
                 <FontAwesomeIcon icon={faWhatsapp} />
               </a>

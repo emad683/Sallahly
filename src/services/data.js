@@ -2,7 +2,7 @@ export const promoVideoConfig = {
   url: "https://youtu.be/ALJ1RXWw56Y",
   id: "ALJ1RXWw56Y",
   videoSrc: "/videos/promo.mp4",
-  thumbnail: "/videoframe_16558.png"
+  thumbnail: "/videos/promo-poster.jpg"
 };
 
 export const servicesData = [

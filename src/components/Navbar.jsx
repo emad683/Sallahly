@@ -83,10 +83,12 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           
           {/* Logo */}
-          <Link to="/" className="flex items-center group py-2">
+          <Link to="/" className="flex items-center group py-2" aria-label="الرئيسية - صلحلي">
             <img 
               src={logoWhite} 
               alt="صلحلي Sallahly" 
+              width="48"
+              height="48"
               className="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-105" 
             />
           </Link>
@@ -147,6 +149,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             <a 
               href="tel:19000" 
+              aria-label="اتصل بخدمة العملاء 19000"
               className="flex items-center gap-2 text-white/90 hover:text-[#FF9F1C] text-sm font-semibold transition-colors"
             >
               <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs">
@@ -176,7 +179,8 @@ export default function Navbar() {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="w-10 h-10 rounded-lg bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors"
-              aria-label="القائمة"
+              aria-label={mobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة الرئيسية"}
+              aria-expanded={mobileMenuOpen}
             >
               <FontAwesomeIcon icon={mobileMenuOpen ? faXmark : faBars} className="text-lg" />
             </button>

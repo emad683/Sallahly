@@ -107,6 +107,10 @@ export default function Details() {
             <img 
               src={service.image} 
               alt={service.fullTitle}
+              width="800"
+              height="300"
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#082545]/90 via-[#082545]/20 to-transparent" />
