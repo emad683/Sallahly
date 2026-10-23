@@ -8,7 +8,6 @@ const Details = lazy(() => import('./pages/Details'));
 const Booking = lazy(() => import('./pages/Booking'));
 const ErrorPage = lazy(() => import('./pages/ErrorPage'));
 
-// Scroll to top helper on navigation
 function ScrollToTop() {
   const { pathname } = useLocation();
 

@@ -40,9 +40,8 @@ import TechnicianCard from '../components/TechnicianCard';
 export default function Details() {
   const { serviceId } = useParams();
   const navigate = useNavigate();
-  const [bookingStatus, setBookingStatus] = useState('idle'); // idle, loading, success
+  const [bookingStatus, setBookingStatus] = useState('idle');
 
-  // Find service by ID, default to 'ac' if not found
   const service = servicesData.find((s) => s.id === serviceId) || servicesData[0];
   const technician = techniciansData[service.technicianId] || techniciansData.ahmed;
 
@@ -82,7 +81,6 @@ export default function Details() {
     <div className="pt-20 sm:pt-24 pb-28 sm:pb-32 bg-[#f8f9ff] min-h-screen">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         
-        {/* Top Header / Back Button */}
         <div className="flex items-center justify-between mb-6">
           <button 
             onClick={() => navigate(-1)}
@@ -99,10 +97,8 @@ export default function Details() {
           </span>
         </div>
 
-        {/* Visual Hero / Service Header Card */}
         <div className="relative overflow-hidden rounded-xl bg-white border border-[#dfe9fa] shadow-sm p-4 sm:p-6 mb-6 flex flex-col gap-5">
           
-          {/* Media preview & Badges */}
           <div className="relative w-full h-56 sm:h-72 rounded-lg overflow-hidden shadow-sm">
             <img 
               src={service.image} 
@@ -115,13 +111,11 @@ export default function Details() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#082545]/90 via-[#082545]/20 to-transparent" />
 
-            {/* Top Badge */}
             <div className="absolute top-3 right-3 flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-sm">
               <FontAwesomeIcon icon={faCertificate} className="text-[#FF9F1C] text-sm" />
               <span className="text-xs font-bold text-[#082545]">خدمة معتمدة</span>
             </div>
 
-            {/* Bottom Badges Row */}
             <div className="absolute bottom-3 right-3 left-3 flex justify-between items-end gap-2">
               <div className="flex items-center gap-2 bg-[#082545]/90 text-white px-3 py-1.5 rounded-lg border border-white/10 text-xs font-semibold backdrop-blur-sm">
                 <FontAwesomeIcon icon={faShieldHalved} className="text-[#FF9F1C]" />
@@ -135,7 +129,6 @@ export default function Details() {
             </div>
           </div>
 
-          {/* Service Title & Core Overview */}
           <div className="flex flex-col gap-2">
             <h1 className="text-xl sm:text-2xl font-black text-[#121c28] leading-snug">
               {service.fullTitle}
@@ -145,7 +138,6 @@ export default function Details() {
             </p>
           </div>
 
-          {/* Included Checklist Grid */}
           <div className="grid grid-cols-2 gap-2.5 pt-2 border-t border-[#e5eeff]">
             {service.features.map((feat, idx) => (
               <div 
@@ -164,7 +156,6 @@ export default function Details() {
 
         </div>
 
-        {/* Verified Technician Card Component */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-bold text-[#082545]">
@@ -177,7 +168,6 @@ export default function Details() {
           <TechnicianCard technician={technician} />
         </div>
 
-        {/* Transparent Pricing Breakdown Section */}
         <div className="bg-[#eef4ff] rounded-xl border border-[#bdd6ff] p-5 sm:p-6 mb-6 flex flex-col gap-4 shadow-sm">
           
           <div className="flex items-center justify-between">
@@ -194,7 +184,6 @@ export default function Details() {
 
           <div className="space-y-4 pt-2">
             
-            {/* Step 1 */}
             <div className="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-[#dfe9fa]">
               <div className="w-7 h-7 rounded-full bg-[#FF9F1C] text-[#082545] flex items-center justify-center text-xs font-black shrink-0 mt-0.5 font-montserrat">
                 1
@@ -210,7 +199,6 @@ export default function Details() {
               </div>
             </div>
 
-            {/* Step 2 */}
             <div className="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-[#dfe9fa]">
               <div className="w-7 h-7 rounded-full bg-[#bdd6ff] text-[#082545] flex items-center justify-center text-xs font-black shrink-0 mt-0.5 font-montserrat">
                 2
@@ -225,7 +213,6 @@ export default function Details() {
               </div>
             </div>
 
-            {/* Step 3 */}
             <div className="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-[#dfe9fa]">
               <div className="w-7 h-7 rounded-full bg-[#bdd6ff] text-[#082545] flex items-center justify-center text-xs font-black shrink-0 mt-0.5 font-montserrat">
                 3
@@ -255,7 +242,6 @@ export default function Details() {
 
         </div>
 
-        {/* Guarantee & Peace of Mind Highlights */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           
           <div className="bg-white border border-[#dfe9fa] p-4 rounded-lg flex items-start gap-3 shadow-sm">
@@ -290,11 +276,9 @@ export default function Details() {
 
       </div>
 
-      {/* Sticky Bottom Booking Bar */}
       <div className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-xl border-t border-[#dfe9fa] p-3 sm:p-4 shadow-[0_-5px_20px_rgba(0,0,0,0.08)]">
         <div className="max-w-3xl mx-auto flex items-center gap-3">
           
-          {/* WhatsApp Support Button */}
           <a
             href="https://wa.me/201000000000"
             target="_blank"
@@ -305,7 +289,6 @@ export default function Details() {
             <FontAwesomeIcon icon={faWhatsapp} />
           </a>
 
-          {/* Main Booking Button */}
           <Link
             to={`/booking?service=${service.id}`}
             className="flex-1 h-12 sm:h-13 rounded-lg font-bold flex items-center justify-between px-5 transition-all shadow-lg cursor-pointer bg-[#FF9F1C] hover:bg-[#ea8d10] text-[#082545] active:scale-[0.98]"

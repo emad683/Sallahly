@@ -36,10 +36,8 @@ export default function Booking() {
   const navigate = useNavigate();
   const initialServiceId = searchParams.get('service') || servicesData[0].id;
 
-  // Multi-step progress: 1 = Service & Issue, 2 = Location & Time, 3 = Contact & Review, 4 = Success
   const [currentStep, setCurrentStep] = useState(1);
 
-  // Form states
   const [selectedServiceId, setSelectedServiceId] = useState(initialServiceId);
   const [selectedIssue, setSelectedIssue] = useState('');
   const [notes, setNotes] = useState('');
@@ -50,24 +48,22 @@ export default function Booking() {
   const [floorAppt, setFloorAppt] = useState('');
   const [landmark, setLandmark] = useState('');
 
-  const [dateOption, setDateOption] = useState('today'); // today, tomorrow, after_tomorrow, custom
+  const [dateOption, setDateOption] = useState('today');
   const [customDate, setCustomDate] = useState('');
-  const [timeSlot, setTimeSlot] = useState('afternoon'); // morning, noon, afternoon, evening
+  const [timeSlot, setTimeSlot] = useState('afternoon');
 
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [whatsappSameAsPhone, setWhatsappSameAsPhone] = useState(true);
   const [whatsappPhone, setWhatsappPhone] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('cash'); // cash, wallet, card
+  const [paymentMethod, setPaymentMethod] = useState('cash');
 
   const [formError, setFormError] = useState('');
   const [bookingId, setBookingId] = useState('');
 
-  // Selected Service & Tech objects
   const selectedService = servicesData.find((s) => s.id === selectedServiceId) || servicesData[0];
   const assignedTech = techniciansData[selectedService.technicianId] || techniciansData.ahmed;
 
-  // If service param changes in URL
   useEffect(() => {
     const sId = searchParams.get('service');
     if (sId && servicesData.some(s => s.id === sId)) {
@@ -75,7 +71,6 @@ export default function Booking() {
     }
   }, [searchParams]);
 
-  // Reset selected issue if service changes
   useEffect(() => {
     if (selectedService?.commonIssues?.length > 0) {
       setSelectedIssue(selectedService.commonIssues[0]);
@@ -133,7 +128,6 @@ export default function Booking() {
         return;
       }
 
-      // Generate booking reference code
       const generatedId = `SLH-${Math.floor(10000 + Math.random() * 90000)}`;
       setBookingId(generatedId);
       setCurrentStep(4);
@@ -175,7 +169,6 @@ export default function Booking() {
     }
   };
 
-  // WhatsApp quick confirmation URL
   const whatsappConfirmUrl = `https://wa.me/201000000000?text=${encodeURIComponent(
     `مرحباً صلحلي، أود تأكيد طلبي:\n- رقم الحجز: ${bookingId}\n- الخدمة: ${selectedService.title}\n- العطل: ${selectedIssue || 'معاينة عامة'}\n- العنوان: ${selectedCity}، ${street} (عمارة ${building || '-'}، شقة ${floorAppt || '-'})\n- الموعد: ${getDateLabel()} - ${getTimeSlotLabel(timeSlot)}\n- الاسم: ${fullName}\n- الموبايل: ${phone}`
   )}`;
@@ -184,7 +177,6 @@ export default function Booking() {
     <div className="pt-20 sm:pt-24 pb-24 bg-[#f8f9ff] min-h-screen">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Top Header */}
         <div className="flex items-center justify-between mb-6">
           <button 
             onClick={() => navigate(-1)}
@@ -203,7 +195,6 @@ export default function Booking() {
           </div>
         </div>
 
-        {/* Page Title & Subtitle */}
         <div className="text-center max-w-2xl mx-auto mb-8">
           <h1 className="text-2xl sm:text-3xl font-black text-[#121c28]">
             {currentStep === 4 ? 'تم تأكيد حجزك بنجاح' : 'احجز فني صيانة لمنزلك في دقائق'}
@@ -215,12 +206,10 @@ export default function Booking() {
           </p>
         </div>
 
-        {/* Progress Bar (Visible in steps 1, 2, 3) */}
         {currentStep < 4 && (
           <div className="max-w-2xl mx-auto mb-10">
             <div className="flex items-center justify-between relative">
               
-              {/* Step Connecting Line */}
               <div className="absolute top-1/2 -translate-y-1/2 right-8 left-8 h-1 bg-[#dfe9fa] -z-0">
                 <div 
                   className="h-full bg-[#FF9F1C] transition-all duration-300"
@@ -230,7 +219,6 @@ export default function Booking() {
                 />
               </div>
 
-              {/* Step 1 */}
               <div className="flex flex-col items-center relative z-10">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
                   currentStep >= 1 ? 'bg-[#082545] text-[#FF9F1C] shadow-md ring-4 ring-[#082545]/10' : 'bg-white border-2 border-[#dfe9fa] text-[#595f64]'
@@ -242,7 +230,6 @@ export default function Booking() {
                 </span>
               </div>
 
-              {/* Step 2 */}
               <div className="flex flex-col items-center relative z-10">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
                   currentStep >= 2 ? 'bg-[#082545] text-[#FF9F1C] shadow-md ring-4 ring-[#082545]/10' : 'bg-white border-2 border-[#dfe9fa] text-[#595f64]'
@@ -254,7 +241,6 @@ export default function Booking() {
                 </span>
               </div>
 
-              {/* Step 3 */}
               <div className="flex flex-col items-center relative z-10">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
                   currentStep >= 3 ? 'bg-[#082545] text-[#FF9F1C] shadow-md ring-4 ring-[#082545]/10' : 'bg-white border-2 border-[#dfe9fa] text-[#595f64]'
@@ -270,7 +256,6 @@ export default function Booking() {
           </div>
         )}
 
-        {/* Validation Error Alert */}
         {formError && (
           <div className="max-w-2xl mx-auto mb-6 p-4 rounded-xl bg-[#ffdad6] border border-[#ba1a1a]/30 text-[#93000a] text-xs font-bold flex items-center gap-3">
             <FontAwesomeIcon icon={faTriangleExclamation} className="text-base shrink-0" />
@@ -278,14 +263,11 @@ export default function Booking() {
           </div>
         )}
 
-        {/* Main Step Content */}
         {currentStep < 4 ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Form Column (8 cols) */}
             <div className="lg:col-span-8 bg-white rounded-xl border border-[#dfe9fa] p-5 sm:p-8 shadow-sm">
               
-              {/* STEP 1: Service & Issue */}
               {currentStep === 1 && (
                 <div className="space-y-6">
                   <div>
@@ -298,7 +280,6 @@ export default function Booking() {
                     </p>
                   </div>
 
-                  {/* 6 Services Selection Grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
                     {servicesData.map((svc) => {
                       const isSelected = svc.id === selectedServiceId;
@@ -345,7 +326,6 @@ export default function Booking() {
                     })}
                   </div>
 
-                  {/* Common Issues Selection */}
                   {selectedService?.commonIssues && (
                     <div className="pt-4 border-t border-[#dfe9fa]">
                       <label className="block text-sm font-bold text-[#121c28] mb-2">
@@ -373,7 +353,6 @@ export default function Booking() {
                     </div>
                   )}
 
-                  {/* Additional Notes */}
                   <div>
                     <label className="block text-xs font-bold text-[#121c28] mb-1.5">
                       تفاصيل إضافية عن العطل (اختياري)
@@ -387,7 +366,6 @@ export default function Booking() {
                     />
                   </div>
 
-                  {/* Next Action */}
                   <div className="pt-4 flex justify-end">
                     <button
                       type="button"
@@ -401,7 +379,6 @@ export default function Booking() {
                 </div>
               )}
 
-              {/* STEP 2: Location & Appointment Schedule */}
               {currentStep === 2 && (
                 <div className="space-y-6">
                   <div>
@@ -414,7 +391,6 @@ export default function Booking() {
                     </p>
                   </div>
 
-                  {/* City Selector */}
                   <div>
                     <label className="block text-xs font-bold text-[#121c28] mb-2">
                       المدينة / الحي
@@ -437,7 +413,6 @@ export default function Booking() {
                     </div>
                   </div>
 
-                  {/* Street & Building Inputs */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-[#121c28] mb-1.5">
@@ -492,14 +467,12 @@ export default function Booking() {
                     </div>
                   </div>
 
-                  {/* Date & Schedule */}
                   <div className="pt-4 border-t border-[#dfe9fa]">
                     <h3 className="text-sm font-bold text-[#121c28] mb-3 flex items-center gap-2">
                       <FontAwesomeIcon icon={faCalendarCheck} className="text-[#FF9F1C]" />
                       <span>اختر موعد الزيارة المناسب</span>
                     </h3>
 
-                    {/* Date Pills */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-4">
                       <button
                         type="button"
@@ -568,7 +541,6 @@ export default function Booking() {
                       </div>
                     )}
 
-                    {/* Time Slot Selector */}
                     <div>
                       <label className="block text-xs font-bold text-[#121c28] mb-2">
                         الفترة الزمنية المفضلة
@@ -598,7 +570,6 @@ export default function Booking() {
                     </div>
                   </div>
 
-                  {/* Actions */}
                   <div className="pt-4 flex items-center justify-between">
                     <button
                       type="button"
@@ -621,7 +592,6 @@ export default function Booking() {
                 </div>
               )}
 
-              {/* STEP 3: Contact & Confirm */}
               {currentStep === 3 && (
                 <div className="space-y-6">
                   <div>
@@ -634,7 +604,6 @@ export default function Booking() {
                     </p>
                   </div>
 
-                  {/* Contact Inputs */}
                   <div className="space-y-4">
                     <div>
                       <label className="block text-xs font-bold text-[#121c28] mb-1.5">
@@ -668,7 +637,6 @@ export default function Booking() {
                       </div>
                     </div>
 
-                    {/* WhatsApp Checkbox */}
                     <div className="flex items-center gap-2 pt-1">
                       <input
                         type="checkbox"
@@ -699,7 +667,6 @@ export default function Booking() {
                     )}
                   </div>
 
-                  {/* Payment Method Selector */}
                   <div className="pt-4 border-t border-[#dfe9fa]">
                     <label className="block text-sm font-bold text-[#121c28] mb-3">
                       طريقة الدفع المفضلة
@@ -769,7 +736,6 @@ export default function Booking() {
                     </div>
                   </div>
 
-                  {/* Guarantee Reminder Notice */}
                   <div className="p-3.5 rounded-lg bg-[#eef4ff] border border-[#bdd6ff] text-xs text-[#082545] flex items-center gap-2.5">
                     <FontAwesomeIcon icon={faShieldHalved} className="text-[#FF9F1C] text-base shrink-0" />
                     <span>
@@ -777,7 +743,6 @@ export default function Booking() {
                     </span>
                   </div>
 
-                  {/* Actions */}
                   <div className="pt-4 flex items-center justify-between">
                     <button
                       type="button"
@@ -802,10 +767,8 @@ export default function Booking() {
 
             </div>
 
-            {/* Sidebar Column: Sticky Summary & Assigned Technician (4 cols) */}
             <div className="lg:col-span-4 space-y-5 lg:sticky lg:top-28">
               
-              {/* Order Summary Card */}
               <div className="bg-white rounded-xl border border-[#dfe9fa] p-5 shadow-sm">
                 <div className="flex items-center justify-between pb-3 border-b border-[#dfe9fa] mb-3">
                   <div className="flex items-center gap-2 text-[#082545] font-bold text-sm">
@@ -817,13 +780,11 @@ export default function Booking() {
                   </span>
                 </div>
 
-                {/* Selected Service Row */}
                 <div className="flex items-center justify-between py-2 border-b border-[#f0f4fa] text-xs">
                   <span className="text-[#595f64] font-medium">الخدمة:</span>
                   <span className="font-bold text-[#121c28] text-left">{selectedService.title}</span>
                 </div>
 
-                {/* Selected Issue */}
                 {selectedIssue && (
                   <div className="flex items-start justify-between py-2 border-b border-[#f0f4fa] text-xs gap-2">
                     <span className="text-[#595f64] font-medium shrink-0">العطل:</span>
@@ -831,7 +792,6 @@ export default function Booking() {
                   </div>
                 )}
 
-                {/* Location if step >= 2 */}
                 {street && (
                   <div className="flex items-start justify-between py-2 border-b border-[#f0f4fa] text-xs gap-2">
                     <span className="text-[#595f64] font-medium shrink-0">العنوان:</span>
@@ -839,13 +799,11 @@ export default function Booking() {
                   </div>
                 )}
 
-                {/* Date & Time if step >= 2 */}
                 <div className="flex items-center justify-between py-2 border-b border-[#f0f4fa] text-xs">
                   <span className="text-[#595f64] font-medium">الموعد:</span>
                   <span className="font-bold text-[#121c28] text-left">{getDateLabel()}</span>
                 </div>
 
-                {/* Inspection Fee */}
                 <div className="flex items-center justify-between pt-3 text-sm">
                   <span className="font-bold text-[#121c28]">قيمة الفحص والمعاينة:</span>
                   <div className="font-black text-[#082545] text-base font-montserrat">
@@ -859,7 +817,6 @@ export default function Booking() {
                 </p>
               </div>
 
-              {/* Verified Technician Profile Badge */}
               <div className="bg-[#082545] text-white rounded-xl p-5 shadow-sm">
                 <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#FF9F1C]">
                   <FontAwesomeIcon icon={faShieldHalved} />
@@ -907,10 +864,8 @@ export default function Booking() {
 
           </div>
         ) : (
-          /* STEP 4: Success Confirmation Screen */
-          <div className="max-w-3xl mx-auto bg-white rounded-xl border border-[#dfe9fa] p-6 sm:p-10 shadow-lg text-center">
+                    <div className="max-w-3xl mx-auto bg-white rounded-xl border border-[#dfe9fa] p-6 sm:p-10 shadow-lg text-center">
             
-            {/* Animated Check Icon */}
             <div className="w-20 h-20 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-4xl mx-auto mb-4 ring-8 ring-green-50">
               <FontAwesomeIcon icon={faCircleCheck} />
             </div>
@@ -928,7 +883,6 @@ export default function Booking() {
               شكراً لاختيارك صلحلي. سيتواصل معك الفني <strong>{assignedTech.name}</strong> هاتفياً أو عبر واتساب خلال 15 دقيقة لتأكيد التحرك للعنوان.
             </p>
 
-            {/* Confirmation Details Card */}
             <div className="bg-[#f8f9ff] rounded-xl border border-[#dfe9fa] p-5 text-right mb-8 max-w-xl mx-auto space-y-3">
               
               <div className="flex items-center justify-between text-xs pb-2 border-b border-[#e5eeff]">
@@ -967,7 +921,6 @@ export default function Booking() {
 
             </div>
 
-            {/* Quick Actions */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <a
                 href={whatsappConfirmUrl}

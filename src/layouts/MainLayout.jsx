@@ -17,7 +17,6 @@ export default function MainLayout() {
   const [activeTab, setActiveTab] = useState('home');
 
   useEffect(() => {
-    // 1. Direct page routes
     if (location.pathname === '/booking' || location.pathname === '/book') {
       setActiveTab('booking');
       return;
@@ -33,7 +32,6 @@ export default function MainLayout() {
       return;
     }
 
-    // 2. Dynamic ScrollSpy on Homepage (/)
     let ticking = false;
 
     const handleScroll = () => {
@@ -41,14 +39,12 @@ export default function MainLayout() {
       const windowHeight = window.innerHeight;
       const docHeight = document.documentElement.scrollHeight;
 
-      // Bottom of page detection (Footer / Contact)
       if (scrollY + windowHeight >= docHeight - 70) {
         setActiveTab('contact');
         ticking = false;
         return;
       }
 
-      // Detection trigger point (approx 35% from top of viewport)
       const triggerY = scrollY + windowHeight * 0.35;
 
       const pricingEl = document.getElementById('pricing');
@@ -103,22 +99,17 @@ export default function MainLayout() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f8f9ff] text-[#121c28]">
-      {/* Top Navbar */}
       <Navbar />
 
-      {/* Main Content Area */}
       <main className="flex-1 pb-16 md:pb-0">
         <Outlet />
       </main>
 
-      {/* Footer */}
       <Footer />
 
-      {/* Mobile Bottom Navigation Bar (Synchronized with active scroll section) */}
       <nav className="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur-xl border-t border-[#dfe9fa] shadow-[0_-4px_16px_rgba(0,0,0,0.06)] px-2 py-1">
         <div className="flex items-center justify-around h-14">
           
-          {/* 1. الرئيسية (Home) */}
           <button 
             type="button"
             onClick={() => handleNavClickTab('home', 'hero')}
@@ -135,7 +126,6 @@ export default function MainLayout() {
             }`} />
           </button>
 
-          {/* 2. خدماتنا (Services) */}
           <button 
             type="button"
             onClick={() => handleNavClickTab('services', 'services')}
@@ -152,7 +142,6 @@ export default function MainLayout() {
             }`} />
           </button>
 
-          {/* 3. Central Highlighted Booking Nav Item (احجز الآن) */}
           <button 
             type="button"
             onClick={() => {
@@ -176,7 +165,6 @@ export default function MainLayout() {
             }`} />
           </button>
 
-          {/* 4. الأسعار (Pricing) */}
           <button 
             type="button"
             onClick={() => handleNavClickTab('pricing', 'pricing')}
@@ -193,7 +181,6 @@ export default function MainLayout() {
             }`} />
           </button>
 
-          {/* 5. رقم الطوارئ (19000) */}
           <a 
             href="tel:19000"
             className={`flex flex-col items-center justify-center min-w-[50px] py-1 transition-all duration-200 cursor-pointer ${

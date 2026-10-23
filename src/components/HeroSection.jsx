@@ -24,12 +24,10 @@ export default function HeroSection({ onBookClick }) {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // Attempt auto-play on mount (muted by default)
     if (videoRef.current) {
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
-          // Autoplay policy fallback: remains paused until interaction
           setIsPlaying(false);
         });
       }
@@ -61,7 +59,6 @@ export default function HeroSection({ onBookClick }) {
     videoRef.current.volume = 1.0;
     setIsMuted(newMuted);
 
-    // If video was paused or unmuted by user gesture, ensure it continues smoothly
     if (videoRef.current.paused) {
       videoRef.current
         .play()
@@ -82,7 +79,6 @@ export default function HeroSection({ onBookClick }) {
 
   return (
     <section id="hero" className="relative bg-[#082545] text-white pt-24 lg:pt-36 pb-16 lg:pb-24 overflow-hidden">
-      {/* Background Grid Pattern & Ambient Glows */}
       <div className="absolute inset-0 pointer-events-none opacity-10">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -100,21 +96,17 @@ export default function HeroSection({ onBookClick }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           
-          {/* Right Column (Text & CTAs & Badges in RTL) */}
           <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-right gap-6">
 
-            {/* Main Headline */}
             <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black text-white leading-tight lg:leading-tight">
               صلحلي…{' '}
               <span className="text-[#FF9F1C] block sm:inline">ضمان، أمان، ودقة</span>
             </h1>
 
-            {/* Subtitle */}
             <p className="text-base sm:text-lg text-[#E8EDF3]/90 max-w-xl leading-relaxed">
               احجز فني صيانة موثوق لبيتك في دقائق. فنيين معتمدين بفيش جنائي، أسعار واضحة ومحددة بدون أي إكراميات، وضمان معتمد 30 يوماً على كل عملية إصلاح.
             </p>
 
-            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mt-2">
               <Link 
                 to="/booking"
@@ -133,7 +125,6 @@ export default function HeroSection({ onBookClick }) {
               </a>
             </div>
 
-            {/* 4 Trust Badges Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full mt-4 pt-4 border-t border-white/10">
               {trustBadges.map((badge) => (
                 <div 
@@ -157,28 +148,22 @@ export default function HeroSection({ onBookClick }) {
 
           </div>
 
-          {/* Left Column: Landscape Phone Mockup (16:9 Orientation on All Devices) */}
           <div className="lg:col-span-6 flex flex-col items-center justify-center w-full">
             
             <div className="relative w-full max-w-[530px] xl:max-w-[560px] mx-auto">
               
-              {/* External hardware buttons (Top edge in landscape) */}
               <div className="hidden sm:block absolute -top-1.5 right-16 md:right-20 w-8 md:w-10 h-1.5 bg-[#3d4f68] rounded-t-sm" />
               <div className="hidden sm:block absolute -top-1.5 right-28 md:right-32 w-8 md:w-10 h-1.5 bg-[#3d4f68] rounded-t-sm" />
               <div className="hidden sm:block absolute -top-1.5 left-16 md:left-20 w-10 md:w-12 h-1.5 bg-[#3d4f68] rounded-t-sm" />
 
-              {/* Outer Phone Frame - Proportional 16:9 Landscape Dimensions */}
               <div className="relative mx-auto w-full rounded-2xl px-2.5 py-1.5 sm:px-5 sm:py-3 bg-gradient-to-r from-[#2a374a] via-[#151f2e] to-[#0b1320] border-[3px] sm:border-[4px] border-[#37475d] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_35px_rgba(255,159,28,0.18)] flex items-center">
                 
-                {/* Left Bezel Detail */}
                 <div className="w-1.5 h-1.5 rounded-full bg-[#1a2533] border border-white/10 shrink-0 ml-1 sm:ml-1.5" />
 
-                {/* Inner Screen with Exact 16:9 Aspect Ratio */}
                 <div 
                   className="relative flex-1 rounded-xl overflow-hidden bg-black aspect-video flex items-center justify-center border border-white/10 group cursor-pointer"
                   onClick={togglePlay}
                 >
-                  {/* Exactly ONE Native HTML5 Video for All Devices */}
                   <video
                     ref={videoRef}
                     src={promoVideoConfig.videoSrc}
@@ -195,7 +180,6 @@ export default function HeroSection({ onBookClick }) {
                     onPause={() => setIsPlaying(false)}
                   />
 
-                  {/* Custom Paused Overlay with Play Icon */}
                   {!isPlaying && (
                     <div className="absolute inset-0 bg-[#082545]/45 backdrop-blur-[1px] flex items-center justify-center transition-all animate-in fade-in duration-200">
                       <div className="w-14 sm:w-16 h-14 sm:h-16 rounded-full bg-[#FF9F1C] text-[#082545] flex items-center justify-center shadow-xl shadow-[#FF9F1C]/40 hover:scale-110 active:scale-95 transition-transform">
@@ -204,7 +188,6 @@ export default function HeroSection({ onBookClick }) {
                     </div>
                   )}
 
-                  {/* Interactive Audio Mute/Unmute Toggle Button */}
                   <button
                     type="button"
                     onClick={toggleMute}
@@ -219,11 +202,9 @@ export default function HeroSection({ onBookClick }) {
                     <span className="text-[10px] hidden sm:inline">{isMuted ? "تشغيل الصوت" : "كتم الصوت"}</span>
                   </button>
 
-                  {/* Landscape Bottom Home Indicator */}
                   <div className="w-20 sm:w-24 h-1 bg-white/40 rounded-full mx-auto absolute bottom-1.5 sm:bottom-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none" />
                 </div>
 
-                {/* Right Bezel Details (Speaker Slit + Camera Punch-hole on the bezel) */}
                 <div className="flex flex-col items-center justify-center gap-1.5 sm:gap-2 shrink-0 mr-1 sm:mr-1.5">
                   <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#0a1017] border border-white/20 shadow-inner" />
                   <div className="w-0.5 sm:w-1 h-6 sm:h-8 rounded-full bg-[#1e2a38] border border-white/5" />

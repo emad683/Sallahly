@@ -31,7 +31,6 @@ export default function ProductCard({ service }) {
   return (
     <div className="bg-white rounded-xl border border-[#dfe9fa] p-6 shadow-sm hover:shadow-xl hover:border-[#FF9F1C]/40 transition-all duration-300 flex flex-col justify-between group">
       <div>
-        {/* Top Header: Icon + Title + Price */}
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-lg bg-[#e5eeff] text-[#082545] group-hover:bg-[#FF9F1C] group-hover:text-[#082545] flex items-center justify-center text-2xl transition-colors duration-300 shrink-0">
@@ -60,12 +59,10 @@ export default function ProductCard({ service }) {
           </div>
         </div>
 
-        {/* Description */}
         <p className="text-sm text-[#4B5563] leading-relaxed mb-5">
           {service.description}
         </p>
 
-        {/* Features preview pills */}
         <div className="grid grid-cols-2 gap-2 mb-6">
           {service.features.map((feat, idx) => (
             <div key={idx} className="flex items-center gap-2 text-xs text-[#121c28] bg-[#f8f9ff] border border-[#e5eeff] p-2 rounded-md">
@@ -76,7 +73,6 @@ export default function ProductCard({ service }) {
         </div>
       </div>
 
-      {/* Footer bar with Time estimate & Action links */}
       <div className="pt-4 border-t border-[#e5eeff] flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 text-xs font-semibold text-[#485f83] truncate">
           <FontAwesomeIcon icon={faClock} className="text-[#FF9F1C] shrink-0" />

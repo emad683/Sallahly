@@ -15,7 +15,6 @@ export default function PricingSection() {
     <section id="pricing" className="py-20 bg-[#f8f9ff] border-b border-[#dfe9fa]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Heading */}
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 bg-[#bdd6ff]/40 text-[#082545] px-3.5 py-1.5 rounded-full text-xs font-bold mb-3 border border-[#bdd6ff]">
             <FontAwesomeIcon icon={faTag} className="text-[#082545] text-xs" />
@@ -31,7 +30,6 @@ export default function PricingSection() {
           </p>
         </div>
 
-        {/* Pricing Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {pricingPlans.map((plan) => (
             <div 
@@ -90,7 +88,6 @@ export default function PricingSection() {
           ))}
         </div>
 
-        {/* Golden Pricing Policy Box */}
         <div className="bg-[#e5eeff] border border-[#bdd6ff] rounded-xl p-6 sm:p-8 max-w-4xl mx-auto shadow-sm">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-md bg-[#FF9F1C] text-[#082545] flex items-center justify-center text-base">

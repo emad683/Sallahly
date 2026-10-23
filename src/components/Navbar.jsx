@@ -82,7 +82,6 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           
-          {/* Logo */}
           <Link to="/" className="flex items-center group py-2" aria-label="الرئيسية - صلحلي">
             <img 
               src={logoWhite} 
@@ -93,7 +92,6 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-8">
             <button 
               onClick={() => handleNavClick('hero')} 
@@ -145,7 +143,6 @@ export default function Navbar() {
             </button>
           </nav>
 
-          {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
             <a 
               href="tel:19000" 
@@ -166,7 +163,6 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-3">
             <Link 
               to="/booking"
@@ -188,7 +184,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#082545] border-b border-white/10 px-6 py-6 flex flex-col gap-4 animate-in slide-in-from-top duration-200">
           <button 

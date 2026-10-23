@@ -19,10 +19,8 @@ export default function Footer() {
     <footer className="bg-[#082545] text-white pt-16 pb-24 md:pb-16 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Top Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
           
-          {/* Brand Info (2 cols) */}
           <div className="lg:col-span-2 flex flex-col gap-4">
             <Link to="/" className="inline-block group mb-1" aria-label="صلحلي - الصفحة الرئيسية">
               <img 
@@ -63,7 +61,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div className="flex flex-col gap-3">
             <h4 className="text-base font-bold text-white mb-2">عن صلحلي</h4>
             <a href="#services" className="text-xs text-[#E8EDF3]/80 hover:text-[#FF9F1C] transition-colors">
@@ -80,7 +77,6 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Services Links */}
           <div className="flex flex-col gap-3">
             <h4 className="text-base font-bold text-white mb-2">خدماتنا الرئيسية</h4>
             <Link to="/service/ac" className="text-xs text-[#E8EDF3]/80 hover:text-[#FF9F1C] transition-colors">
@@ -97,7 +93,6 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Contact & Social */}
           <div className="flex flex-col gap-3">
             <h4 className="text-base font-bold text-white mb-2">تابعنا وتواصل معنا</h4>
             <div className="flex items-center gap-3 mb-2">
@@ -134,7 +129,6 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#E8EDF3]/60">
           <p>
             جميع الحقوق محفوظة لمنصة صلحلي للصيانة المنزلية © {new Date().getFullYear()}

@@ -10,7 +10,6 @@ export default function ServicesSection() {
     <section id="services" className="py-20 bg-[#f8f9ff] border-b border-[#dfe9fa]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Heading */}
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-14">
 
           <h2 className="text-3xl sm:text-4xl font-black text-[#121c28] tracking-tight">
@@ -22,14 +21,12 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        {/* 6 Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {servicesData.map((service) => (
             <ProductCard key={service.id} service={service} />
           ))}
         </div>
 
-        {/* Bottom Booking Quick Banner */}
         <div className="mt-12 p-6 rounded-xl bg-white border border-[#dfe9fa] max-w-3xl mx-auto shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-right">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-[#e5eeff] text-[#082545] flex items-center justify-center text-lg shrink-0">

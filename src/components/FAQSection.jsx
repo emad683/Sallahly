@@ -17,7 +17,6 @@ export default function FAQSection() {
     <section id="faq" className="py-20 bg-[#f8f9ff] border-b border-[#dfe9fa]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Heading */}
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-14">
 
           <h2 className="text-3xl sm:text-4xl font-black text-[#121c28] tracking-tight">
@@ -29,7 +28,6 @@ export default function FAQSection() {
           </p>
         </div>
 
-        {/* FAQ Accordion List */}
         <div className="space-y-4">
           {faqsData.map((faq) => {
             const isOpen = openId === faq.id;
