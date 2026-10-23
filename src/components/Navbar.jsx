@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faBars, 
@@ -11,19 +11,69 @@ import logoWhite from '../assets/images/logo-icon-white.svg';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setActiveSection('');
+      return;
+    }
+
+    let ticking = false;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const triggerY = scrollY + windowHeight * 0.35;
+
+      const sectionIds = ['faq', 'pricing', 'why-us', 'how-it-works', 'services'];
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el && triggerY >= el.offsetTop) {
+          setActiveSection(id);
+          ticking = false;
+          return;
+        }
+      }
+
+      setActiveSection('hero');
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(handleScroll);
+        ticking = true;
+      }
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [location.pathname]);
 
   const handleNavClick = (id) => {
     setMobileMenuOpen(false);
-    if (window.location.pathname !== '/') {
+    setActiveSection(id);
+    if (location.pathname !== '/') {
       navigate('/');
       setTimeout(() => {
-        const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        if (id === 'hero') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
       }, 150);
     } else {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      if (id === 'hero') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -45,37 +95,49 @@ export default function Navbar() {
           <nav className="hidden md:flex items-center gap-8">
             <button 
               onClick={() => handleNavClick('hero')} 
-              className="text-[#E8EDF3] hover:text-[#FF9F1C] font-semibold text-sm transition-colors cursor-pointer"
+              className={`text-sm transition-colors cursor-pointer ${
+                activeSection === 'hero' ? 'text-[#FF9F1C] font-bold' : 'text-[#E8EDF3] hover:text-[#FF9F1C] font-semibold'
+              }`}
             >
               الرئيسية
             </button>
             <button 
               onClick={() => handleNavClick('services')} 
-              className="text-[#E8EDF3] hover:text-[#FF9F1C] font-semibold text-sm transition-colors cursor-pointer"
+              className={`text-sm transition-colors cursor-pointer ${
+                activeSection === 'services' ? 'text-[#FF9F1C] font-bold' : 'text-[#E8EDF3] hover:text-[#FF9F1C] font-semibold'
+              }`}
             >
               خدماتنا
             </button>
             <button 
               onClick={() => handleNavClick('how-it-works')} 
-              className="text-[#E8EDF3] hover:text-[#FF9F1C] font-semibold text-sm transition-colors cursor-pointer"
+              className={`text-sm transition-colors cursor-pointer ${
+                activeSection === 'how-it-works' ? 'text-[#FF9F1C] font-bold' : 'text-[#E8EDF3] hover:text-[#FF9F1C] font-semibold'
+              }`}
             >
               ازاي بنشتغل؟
             </button>
             <button 
               onClick={() => handleNavClick('why-us')} 
-              className="text-[#E8EDF3] hover:text-[#FF9F1C] font-semibold text-sm transition-colors cursor-pointer"
+              className={`text-sm transition-colors cursor-pointer ${
+                activeSection === 'why-us' ? 'text-[#FF9F1C] font-bold' : 'text-[#E8EDF3] hover:text-[#FF9F1C] font-semibold'
+              }`}
             >
               ليه صلحلي؟
             </button>
             <button 
               onClick={() => handleNavClick('pricing')} 
-              className="text-[#E8EDF3] hover:text-[#FF9F1C] font-semibold text-sm transition-colors cursor-pointer"
+              className={`text-sm transition-colors cursor-pointer ${
+                activeSection === 'pricing' ? 'text-[#FF9F1C] font-bold' : 'text-[#E8EDF3] hover:text-[#FF9F1C] font-semibold'
+              }`}
             >
               الأسعار
             </button>
             <button 
               onClick={() => handleNavClick('faq')} 
-              className="text-[#E8EDF3] hover:text-[#FF9F1C] font-semibold text-sm transition-colors cursor-pointer"
+              className={`text-sm transition-colors cursor-pointer ${
+                activeSection === 'faq' ? 'text-[#FF9F1C] font-bold' : 'text-[#E8EDF3] hover:text-[#FF9F1C] font-semibold'
+              }`}
             >
               الأسئلة الشائعة
             </button>

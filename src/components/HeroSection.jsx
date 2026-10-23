@@ -44,8 +44,7 @@ export default function HeroSection({ onBookClick }) {
     const activeVideo = window.innerWidth >= 1024 ? desktopVideoRef.current : mobileVideoRef.current;
     if (activeVideo) {
       if (activeVideo.paused) {
-        activeVideo.play();
-        setIsPlaying(true);
+        activeVideo.play().then(() => setIsPlaying(true)).catch(() => {});
       } else {
         activeVideo.pause();
         setIsPlaying(false);
@@ -54,11 +53,20 @@ export default function HeroSection({ onBookClick }) {
   };
 
   const toggleMute = (e) => {
-    e.stopPropagation();
-    const activeVideo = window.innerWidth >= 1024 ? desktopVideoRef.current : mobileVideoRef.current;
-    if (activeVideo) {
-      activeVideo.muted = !activeVideo.muted;
-      setIsMuted(activeVideo.muted);
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    const newMuted = !isMuted;
+    setIsMuted(newMuted);
+
+    if (desktopVideoRef.current) {
+      desktopVideoRef.current.muted = newMuted;
+      desktopVideoRef.current.volume = 1.0;
+    }
+    if (mobileVideoRef.current) {
+      mobileVideoRef.current.muted = newMuted;
+      mobileVideoRef.current.volume = 1.0;
     }
   };
 
@@ -177,9 +185,10 @@ export default function HeroSection({ onBookClick }) {
                     src={promoVideoConfig.videoSrc}
                     poster={promoVideoConfig.thumbnail}
                     autoPlay
-                    muted
+                    muted={isMuted}
                     loop
                     playsInline
+                    preload="auto"
                     className="w-full h-full object-cover rounded-xl"
                     onPlay={() => setIsPlaying(true)}
                     onPause={() => setIsPlaying(false)}
@@ -194,13 +203,19 @@ export default function HeroSection({ onBookClick }) {
                     </div>
                   )}
 
-                  {/* Subtle Audio Mute/Unmute Toggle in Corner */}
+                  {/* Interactive Audio Mute/Unmute Toggle Button */}
                   <button
+                    type="button"
                     onClick={toggleMute}
                     aria-label={isMuted ? "تشغيل الصوت" : "كتم الصوت"}
-                    className="absolute top-3 left-3 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center text-xs transition-opacity opacity-0 group-hover:opacity-100 backdrop-blur-sm z-30"
+                    className={`absolute top-3 left-3 h-8 px-2.5 rounded-full backdrop-blur-md flex items-center gap-1.5 text-xs font-bold transition-all z-30 cursor-pointer shadow-md ${
+                      isMuted 
+                        ? 'bg-black/70 hover:bg-black/90 text-white' 
+                        : 'bg-[#FF9F1C] text-[#082545] shadow-[#FF9F1C]/40 ring-2 ring-white/30'
+                    }`}
                   >
-                    <FontAwesomeIcon icon={isMuted ? faVolumeXmark : faVolumeHigh} />
+                    <FontAwesomeIcon icon={isMuted ? faVolumeXmark : faVolumeHigh} className={isMuted ? "text-xs" : "text-sm"} />
+                    <span className="text-[10px] hidden sm:inline">{isMuted ? "تشغيل الصوت" : "كتم الصوت"}</span>
                   </button>
 
                   {/* Landscape Bottom Home Indicator */}
@@ -227,9 +242,10 @@ export default function HeroSection({ onBookClick }) {
                   src={promoVideoConfig.videoSrc}
                   poster={promoVideoConfig.thumbnail}
                   autoPlay
-                  muted
+                  muted={isMuted}
                   loop
                   playsInline
+                  preload="auto"
                   className="w-full h-full object-cover rounded-xl"
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}
@@ -244,13 +260,19 @@ export default function HeroSection({ onBookClick }) {
                   </div>
                 )}
 
-                {/* Subtle Audio Mute/Unmute Toggle in Corner */}
+                {/* Interactive Audio Mute/Unmute Toggle for Mobile */}
                 <button
+                  type="button"
                   onClick={toggleMute}
                   aria-label={isMuted ? "تشغيل الصوت" : "كتم الصوت"}
-                  className="absolute top-2.5 left-2.5 w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center text-[10px] backdrop-blur-sm z-30"
+                  className={`absolute top-2.5 left-2.5 h-7 px-2.5 rounded-full backdrop-blur-md flex items-center gap-1.5 text-[11px] font-bold transition-all z-30 cursor-pointer shadow-md ${
+                    isMuted 
+                      ? 'bg-black/70 text-white' 
+                      : 'bg-[#FF9F1C] text-[#082545] shadow-[#FF9F1C]/40 ring-2 ring-white/30'
+                  }`}
                 >
-                  <FontAwesomeIcon icon={isMuted ? faVolumeXmark : faVolumeHigh} />
+                  <FontAwesomeIcon icon={isMuted ? faVolumeXmark : faVolumeHigh} className="text-xs" />
+                  <span className="text-[10px]">{isMuted ? "تشغيل الصوت" : "كتم الصوت"}</span>
                 </button>
               </div>
             </div>
