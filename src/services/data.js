@@ -1,8 +1,8 @@
 export const promoVideoConfig = {
-  url: "https://youtu.be/NSAOrGb9orM",
-  id: "NSAOrGb9orM",
+  url: "https://youtu.be/ALJ1RXWw56Y",
+  id: "ALJ1RXWw56Y",
   videoSrc: "/videos/promo.mp4",
-  thumbnail: "https://img.youtube.com/vi/NSAOrGb9orM/maxresdefault.jpg"
+  thumbnail: "/videoframe_16558.png"
 };
 
 export const servicesData = [
