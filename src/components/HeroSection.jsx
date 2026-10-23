@@ -21,34 +21,31 @@ import { trustBadges, promoVideoConfig } from '../services/data.js';
 export default function HeroSection({ onBookClick }) {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
-  const desktopVideoRef = useRef(null);
-  const mobileVideoRef = useRef(null);
+  const videoRef = useRef(null);
 
   useEffect(() => {
-    // Attempt auto-play on mount
-    const playPromiseDesktop = desktopVideoRef.current?.play();
-    if (playPromiseDesktop !== undefined) {
-      playPromiseDesktop.catch(() => {
-        // Autoplay policy fallback
-      });
-    }
-    const playPromiseMobile = mobileVideoRef.current?.play();
-    if (playPromiseMobile !== undefined) {
-      playPromiseMobile.catch(() => {
-        // Autoplay policy fallback
-      });
+    // Attempt auto-play on mount (muted by default)
+    if (videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay policy fallback: remains paused until interaction
+          setIsPlaying(false);
+        });
+      }
     }
   }, []);
 
   const togglePlay = () => {
-    const activeVideo = window.innerWidth >= 1024 ? desktopVideoRef.current : mobileVideoRef.current;
-    if (activeVideo) {
-      if (activeVideo.paused) {
-        activeVideo.play().then(() => setIsPlaying(true)).catch(() => {});
-      } else {
-        activeVideo.pause();
-        setIsPlaying(false);
-      }
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {});
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
     }
   };
 
@@ -57,16 +54,19 @@ export default function HeroSection({ onBookClick }) {
       e.stopPropagation();
       e.preventDefault();
     }
+    if (!videoRef.current) return;
+
     const newMuted = !isMuted;
+    videoRef.current.muted = newMuted;
+    videoRef.current.volume = 1.0;
     setIsMuted(newMuted);
 
-    if (desktopVideoRef.current) {
-      desktopVideoRef.current.muted = newMuted;
-      desktopVideoRef.current.volume = 1.0;
-    }
-    if (mobileVideoRef.current) {
-      mobileVideoRef.current.muted = newMuted;
-      mobileVideoRef.current.volume = 1.0;
+    // If video was paused or unmuted by user gesture, ensure it continues smoothly
+    if (videoRef.current.paused) {
+      videoRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {});
     }
   };
 
@@ -157,31 +157,30 @@ export default function HeroSection({ onBookClick }) {
 
           </div>
 
-          {/* Left Column: Landscape Phone Mockup (16:9 Orientation on Desktop) */}
+          {/* Left Column: Landscape Phone Mockup (16:9 Orientation on All Devices) */}
           <div className="lg:col-span-6 flex flex-col items-center justify-center w-full">
             
-            {/* Desktop View: Rotated Phone in Landscape (16:9) */}
-            <div className="hidden lg:block relative w-full max-w-[530px] xl:max-w-[560px]">
+            <div className="relative w-full max-w-[530px] xl:max-w-[560px] mx-auto">
               
               {/* External hardware buttons (Top edge in landscape) */}
-              <div className="absolute -top-1.5 right-20 w-10 h-1.5 bg-[#3d4f68] rounded-t-sm" />
-              <div className="absolute -top-1.5 right-32 w-10 h-1.5 bg-[#3d4f68] rounded-t-sm" />
-              <div className="absolute -top-1.5 left-20 w-12 h-1.5 bg-[#3d4f68] rounded-t-sm" />
+              <div className="hidden sm:block absolute -top-1.5 right-16 md:right-20 w-8 md:w-10 h-1.5 bg-[#3d4f68] rounded-t-sm" />
+              <div className="hidden sm:block absolute -top-1.5 right-28 md:right-32 w-8 md:w-10 h-1.5 bg-[#3d4f68] rounded-t-sm" />
+              <div className="hidden sm:block absolute -top-1.5 left-16 md:left-20 w-10 md:w-12 h-1.5 bg-[#3d4f68] rounded-t-sm" />
 
               {/* Outer Phone Frame - Proportional 16:9 Landscape Dimensions */}
-              <div className="relative mx-auto w-full rounded-2xl px-5 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-[#2a374a] via-[#151f2e] to-[#0b1320] border-[4px] border-[#37475d] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_35px_rgba(255,159,28,0.18)] flex items-center">
+              <div className="relative mx-auto w-full rounded-2xl px-2.5 py-1.5 sm:px-5 sm:py-3 bg-gradient-to-r from-[#2a374a] via-[#151f2e] to-[#0b1320] border-[3px] sm:border-[4px] border-[#37475d] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_35px_rgba(255,159,28,0.18)] flex items-center">
                 
                 {/* Left Bezel Detail */}
-                <div className="w-1.5 h-1.5 rounded-full bg-[#1a2533] border border-white/10 shrink-0 ml-1.5" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#1a2533] border border-white/10 shrink-0 ml-1 sm:ml-1.5" />
 
                 {/* Inner Screen with Exact 16:9 Aspect Ratio */}
                 <div 
                   className="relative flex-1 rounded-xl overflow-hidden bg-black aspect-video flex items-center justify-center border border-white/10 group cursor-pointer"
                   onClick={togglePlay}
                 >
-                  {/* Native HTML5 Video (No YouTube UI/Branding) */}
+                  {/* Exactly ONE Native HTML5 Video for All Devices */}
                   <video
-                    ref={desktopVideoRef}
+                    ref={videoRef}
                     src={promoVideoConfig.videoSrc}
                     poster={promoVideoConfig.thumbnail}
                     autoPlay
@@ -199,8 +198,8 @@ export default function HeroSection({ onBookClick }) {
                   {/* Custom Paused Overlay with Play Icon */}
                   {!isPlaying && (
                     <div className="absolute inset-0 bg-[#082545]/45 backdrop-blur-[1px] flex items-center justify-center transition-all animate-in fade-in duration-200">
-                      <div className="w-16 h-16 rounded-full bg-[#FF9F1C] text-[#082545] flex items-center justify-center shadow-xl shadow-[#FF9F1C]/40 hover:scale-110 active:scale-95 transition-transform">
-                        <FontAwesomeIcon icon={faPlay} className="text-2xl ml-0.5" />
+                      <div className="w-14 sm:w-16 h-14 sm:h-16 rounded-full bg-[#FF9F1C] text-[#082545] flex items-center justify-center shadow-xl shadow-[#FF9F1C]/40 hover:scale-110 active:scale-95 transition-transform">
+                        <FontAwesomeIcon icon={faPlay} className="text-xl sm:text-2xl ml-0.5" />
                       </div>
                     </div>
                   )}
@@ -210,7 +209,7 @@ export default function HeroSection({ onBookClick }) {
                     type="button"
                     onClick={toggleMute}
                     aria-label={isMuted ? "تشغيل الصوت" : "كتم الصوت"}
-                    className={`absolute top-3 left-3 h-8 px-2.5 rounded-full backdrop-blur-md flex items-center gap-1.5 text-xs font-bold transition-all z-30 cursor-pointer shadow-md ${
+                    className={`absolute top-2.5 sm:top-3 left-2.5 sm:left-3 h-7 sm:h-8 px-2.5 sm:px-3 rounded-full backdrop-blur-md flex items-center gap-1.5 text-[11px] sm:text-xs font-bold transition-all z-30 cursor-pointer shadow-md ${
                       isMuted 
                         ? 'bg-black/70 hover:bg-black/90 text-white' 
                         : 'bg-[#FF9F1C] text-[#082545] shadow-[#FF9F1C]/40 ring-2 ring-white/30'
@@ -221,63 +220,14 @@ export default function HeroSection({ onBookClick }) {
                   </button>
 
                   {/* Landscape Bottom Home Indicator */}
-                  <div className="w-24 h-1 bg-white/40 rounded-full mx-auto absolute bottom-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none" />
+                  <div className="w-20 sm:w-24 h-1 bg-white/40 rounded-full mx-auto absolute bottom-1.5 sm:bottom-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none" />
                 </div>
 
                 {/* Right Bezel Details (Speaker Slit + Camera Punch-hole on the bezel) */}
-                <div className="flex flex-col items-center justify-center gap-2 shrink-0 mr-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#0a1017] border border-white/20 shadow-inner" />
-                  <div className="w-1 h-8 rounded-full bg-[#1e2a38] border border-white/5" />
+                <div className="flex flex-col items-center justify-center gap-1.5 sm:gap-2 shrink-0 mr-1 sm:mr-1.5">
+                  <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#0a1017] border border-white/20 shadow-inner" />
+                  <div className="w-0.5 sm:w-1 h-6 sm:h-8 rounded-full bg-[#1e2a38] border border-white/5" />
                 </div>
-              </div>
-            </div>
-
-            {/* Mobile View: High Quality 16:9 Video Card */}
-            <div className="block lg:hidden w-full max-w-md mx-auto">
-              <div 
-                className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border border-white/15 bg-slate-900 group cursor-pointer"
-                onClick={togglePlay}
-              >
-                {/* Native HTML5 Video for Mobile */}
-                <video
-                  ref={mobileVideoRef}
-                  src={promoVideoConfig.videoSrc}
-                  poster={promoVideoConfig.thumbnail}
-                  autoPlay
-                  muted={isMuted}
-                  loop
-                  playsInline
-                  preload="metadata"
-                  width="448"
-                  height="252"
-                  className="w-full h-full object-cover rounded-xl"
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => setIsPlaying(false)}
-                />
-
-                {/* Custom Paused Overlay with Play Icon */}
-                {!isPlaying && (
-                  <div className="absolute inset-0 bg-[#082545]/45 backdrop-blur-[1px] flex items-center justify-center transition-all animate-in fade-in duration-200">
-                    <div className="w-14 h-14 rounded-full bg-[#FF9F1C] text-[#082545] flex items-center justify-center shadow-lg shadow-[#FF9F1C]/40 active:scale-95 transition-transform">
-                      <FontAwesomeIcon icon={faPlay} className="text-xl ml-0.5" />
-                    </div>
-                  </div>
-                )}
-
-                {/* Interactive Audio Mute/Unmute Toggle for Mobile */}
-                <button
-                  type="button"
-                  onClick={toggleMute}
-                  aria-label={isMuted ? "تشغيل الصوت" : "كتم الصوت"}
-                  className={`absolute top-2.5 left-2.5 h-7 px-2.5 rounded-full backdrop-blur-md flex items-center gap-1.5 text-[11px] font-bold transition-all z-30 cursor-pointer shadow-md ${
-                    isMuted 
-                      ? 'bg-black/70 text-white' 
-                      : 'bg-[#FF9F1C] text-[#082545] shadow-[#FF9F1C]/40 ring-2 ring-white/30'
-                  }`}
-                >
-                  <FontAwesomeIcon icon={isMuted ? faVolumeXmark : faVolumeHigh} className="text-xs" />
-                  <span className="text-[10px]">{isMuted ? "تشغيل الصوت" : "كتم الصوت"}</span>
-                </button>
               </div>
             </div>
 
