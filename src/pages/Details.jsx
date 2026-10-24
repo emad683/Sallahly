@@ -73,6 +73,7 @@ export default function Details() {
       case 'door-open': return faDoorOpen;
       case 'droplet': return faDroplet;
       case 'fire': return faFire;
+      case 'shield-halved': return faShieldHalved;
       default: return faCircleCheck;
     }
   };

@@ -27,7 +27,8 @@ import {
   faTriangleExclamation,
   faHouse,
   faComments,
-  faCircleExclamation
+  faCircleExclamation,
+  faSliders
 } from '@fortawesome/free-solid-svg-icons';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { servicesData, techniciansData, cairoCities } from '../services/data';
@@ -88,6 +89,7 @@ export default function Booking() {
       case 'kitchen-set': return faKitchenSet;
       case 'hammer': return faHammer;
       case 'filter': return faFilter;
+      case 'sliders': return faSliders;
       default: return faWrench;
     }
   };
@@ -443,6 +445,7 @@ export default function Booking() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
                     {servicesData.map((svc) => {
                       const isSelected = svc.id === selectedServiceId;
+                      const isCustom = svc.id === 'custom';
                       return (
                         <div
                           key={svc.id}
@@ -450,6 +453,8 @@ export default function Booking() {
                           className={`p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col justify-between text-right relative ${
                             isSelected
                               ? 'border-[#FF9F1C] bg-[#fffaf2] shadow-md ring-1 ring-[#FF9F1C]'
+                              : isCustom
+                              ? 'border-[#FF9F1C]/50 bg-gradient-to-br from-[#fffdfa] to-white hover:border-[#FF9F1C]'
                               : 'border-[#dfe9fa] bg-[#f8f9ff] hover:border-[#082545]/30 hover:bg-white'
                           }`}
                         >
@@ -461,12 +466,14 @@ export default function Booking() {
 
                           <div className="flex items-center gap-3 mb-3">
                             <div className={`w-11 h-11 rounded-lg flex items-center justify-center text-lg transition-colors ${
-                              isSelected ? 'bg-[#FF9F1C] text-[#082545]' : 'bg-[#e5eeff] text-[#082545]'
+                              isSelected ? 'bg-[#FF9F1C] text-[#082545]' : isCustom ? 'bg-[#FF9F1C] text-[#082545]' : 'bg-[#e5eeff] text-[#082545]'
                             }`}>
                               <FontAwesomeIcon icon={getServiceIcon(svc.iconName)} />
                             </div>
                             <div>
-                              <span className="text-[10px] font-bold text-[#595f64] bg-[#e5eeff] px-2 py-0.5 rounded-md">
+                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                                isCustom ? 'text-[#082545] bg-[#FF9F1C]' : 'text-[#595f64] bg-[#e5eeff]'
+                              }`}>
                                 {svc.badge}
                               </span>
                             </div>
@@ -485,6 +492,18 @@ export default function Booking() {
                       );
                     })}
                   </div>
+
+                  {selectedServiceId === 'custom' && (
+                    <div className="p-3.5 rounded-xl bg-[#fffaf2] border border-[#FF9F1C]/40 text-xs text-[#082545] flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-[#FF9F1C] text-[#082545] flex items-center justify-center shrink-0 text-sm">
+                        <FontAwesomeIcon icon={faSliders} />
+                      </div>
+                      <div>
+                        <span className="font-bold block">طلب صيانة أو فحص مخصص:</span>
+                        <span className="text-[#595f64] text-[11px]">حدد المشكلة الأقرب أدناه، أو اكتب تفاصيل طلبك بدقة في خانة الملاحظات وسيقوم فريقنا بتنسيق الفني المناسب فوراً.</span>
+                      </div>
+                    </div>
+                  )}
 
                   {selectedService?.commonIssues && (
                     <div className="pt-4 border-t border-[#dfe9fa]">
@@ -515,13 +534,13 @@ export default function Booking() {
 
                   <div>
                     <label className="block text-xs font-bold text-[#121c28] mb-1.5">
-                      تفاصيل إضافية عن العطل (اختياري)
+                      {selectedServiceId === 'custom' ? 'تفاصيل طلبك المخصص (اكتب وصف العطل أو ما تحتاجه بدقة)' : 'تفاصيل إضافية عن العطل (اختياري)'}
                     </label>
                     <textarea
                       rows={3}
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
-                      placeholder="مثال: نوع وماركة الجهاز، أصوات غريبة، أو متى بدأ العطل في الحدوث..."
+                      placeholder={selectedServiceId === 'custom' ? 'مثال: مطلوب فحص شامل لكهرباء وسباكة شقة قبل الاستلام، أو تصليح جهاز معين غير مدرج...' : 'مثال: نوع وماركة الجهاز، أصوات غريبة، أو متى بدأ العطل في الحدوث...'}
                       className="w-full p-3 rounded-lg border border-[#dfe9fa] bg-[#f8f9ff] text-xs focus:bg-white focus:outline-none focus:border-[#082545] transition-colors"
                     />
                   </div>

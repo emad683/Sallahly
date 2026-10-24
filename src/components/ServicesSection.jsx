@@ -43,7 +43,7 @@ export default function ServicesSection() {
           </div>
 
           <Link
-            to="/booking"
+            to="/booking?service=custom"
             className="h-10 px-5 rounded-lg bg-[#082545] hover:bg-[#0d3b6e] text-white font-bold text-xs flex items-center gap-2 transition-all shadow-md shrink-0 cursor-pointer"
           >
             <FontAwesomeIcon icon={faCalendarCheck} />

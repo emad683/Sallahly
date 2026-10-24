@@ -167,6 +167,33 @@ export const servicesData = [
       "نقل وتركيب الفلتر في مكان جديد"
     ],
     technicianId: "sameh"
+  },
+  {
+    id: "custom",
+    title: "طلب صيانة خاصة أو فحص مخصص",
+    fullTitle: "طلب صيانة مخصصة أو فحص شامل حسب اختيار العميل",
+    price: 150,
+    subtitle: "اختر مشكلتك أو صف عطل غير مدرج بالقائمة",
+    description: "خدمة مخصصة بالكامل تتيح لك طلب أي نوع صيانة أو فحص منزلي شامل، مع تحديد العطل بدقة وسيقوم خبراؤنا بتوجيه الفني المتخصص فوراً.",
+    timeEstimate: "تنسيق فوري خلال 30 دقيقة",
+    badge: "طلب مخصص",
+    iconName: "sliders",
+    image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80",
+    features: [
+      { title: "معاينة وتشخيص دقيق للعطل", iconName: "magnifying-glass" },
+      { title: "ترشيح الفني الأنسب للتخصص", iconName: "screwdriver-wrench" },
+      { title: "عرض أسعار مسبق ومعتمد", iconName: "scale-balanced" },
+      { title: "ضمان 30 يوماً على الإصلاح", iconName: "shield-halved" }
+    ],
+    commonIssues: [
+      "معاينة شاملة لأعطال شقة أو فيلا بالكامل",
+      "صيانة جهاز منزلي أو إلكتروني غير مدرج",
+      "أعمال تركيبات وتثبيتات وديكورات خاصة",
+      "استشارة هندسية وفحص عام قبل التجديدات",
+      "عطل مركب يشمل أكثر من تخصص معاً",
+      "مشكلة أخرى مخصصة (سأكتبها في الملاحظات)"
+    ],
+    technicianId: "general"
   }
 ];
 
@@ -242,6 +269,18 @@ export const techniciansData = {
     punctualityRate: "100%",
     punctualityText: "دقة متناهية والتزام بالموعد",
     avatar: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=400&q=80"
+  },
+  general: {
+    id: "general",
+    name: "م. إسلام خليل",
+    role: "كبير مهندسي الصيانة والمعاينة المعتمدين",
+    rating: "4.98",
+    reviewsCount: "520+ طلب ناجح",
+    experience: "16 سنة خبرة",
+    securityStatus: "فيش جنائي معتمد ساري",
+    punctualityRate: "99%",
+    punctualityText: "التزام فوري بالمواعيد",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
   }
 };
 

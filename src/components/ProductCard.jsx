@@ -12,10 +12,13 @@ import {
   faKitchenSet,
   faHammer,
   faFilter,
-  faCalendarCheck
+  faCalendarCheck,
+  faSliders
 } from '@fortawesome/free-solid-svg-icons';
 
 export default function ProductCard({ service }) {
+  const isCustom = service.id === 'custom';
+
   const getIcon = (iconName) => {
     switch (iconName) {
       case 'snowflake': return faSnowflake;
@@ -24,21 +27,32 @@ export default function ProductCard({ service }) {
       case 'kitchen-set': return faKitchenSet;
       case 'hammer': return faHammer;
       case 'filter': return faFilter;
+      case 'sliders': return faSliders;
       default: return faWrench;
     }
   };
 
   return (
-    <div className="bg-white rounded-xl border border-[#dfe9fa] p-6 shadow-sm hover:shadow-xl hover:border-[#FF9F1C]/40 transition-all duration-300 flex flex-col justify-between group">
+    <div className={`rounded-xl border p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group ${
+      isCustom
+        ? 'bg-gradient-to-br from-[#fffdfa] via-white to-[#fff8ee] border-2 border-[#FF9F1C] ring-2 ring-[#FF9F1C]/20 shadow-md'
+        : 'bg-white border-[#dfe9fa] hover:border-[#FF9F1C]/40'
+    }`}>
       <div>
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-lg bg-[#e5eeff] text-[#082545] group-hover:bg-[#FF9F1C] group-hover:text-[#082545] flex items-center justify-center text-2xl transition-colors duration-300 shrink-0">
+            <div className={`w-14 h-14 rounded-lg flex items-center justify-center text-2xl transition-colors duration-300 shrink-0 ${
+              isCustom 
+                ? 'bg-[#FF9F1C] text-[#082545]' 
+                : 'bg-[#e5eeff] text-[#082545] group-hover:bg-[#FF9F1C] group-hover:text-[#082545]'
+            }`}>
               <FontAwesomeIcon icon={getIcon(service.iconName)} />
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-[11px] font-bold text-[#082545] bg-[#e5eeff] px-2.5 py-0.5 rounded-full">
+                <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
+                  isCustom ? 'text-[#082545] bg-[#FF9F1C]' : 'text-[#082545] bg-[#e5eeff]'
+                }`}>
                   {service.badge}
                 </span>
               </div>
@@ -90,10 +104,10 @@ export default function ProductCard({ service }) {
 
           <Link
             to={`/booking?service=${service.id}`}
-            className="h-9 px-3 rounded-lg bg-[#FF9F1C] hover:bg-[#ea8d10] text-[#082545] font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+            className="h-9 px-3.5 rounded-lg bg-[#FF9F1C] hover:bg-[#ea8d10] text-[#082545] font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
           >
-            <FontAwesomeIcon icon={faCalendarCheck} className="text-[11px]" />
-            <span>احجز</span>
+            <FontAwesomeIcon icon={isCustom ? faSliders : faCalendarCheck} className="text-[11px]" />
+            <span>{isCustom ? 'تخصيص وحجز' : 'احجز'}</span>
           </Link>
         </div>
       </div>
