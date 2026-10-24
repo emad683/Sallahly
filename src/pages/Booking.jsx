@@ -26,7 +26,8 @@ import {
   faIdCard, 
   faTriangleExclamation,
   faHouse,
-  faComments
+  faComments,
+  faCircleExclamation
 } from '@fortawesome/free-solid-svg-icons';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { servicesData, techniciansData, cairoCities } from '../services/data';
@@ -91,43 +92,202 @@ export default function Booking() {
     }
   };
 
+  const [touched, setTouched] = useState({});
+  const [errors, setErrors] = useState({});
+
+  const todayString = new Date().toISOString().split('T')[0];
+
+  const normalizeDigits = (str) => {
+    if (!str) return '';
+    const arabicNums = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    let result = '';
+    for (let char of str) {
+      const idx = arabicNums.indexOf(char);
+      if (idx !== -1) {
+        result += idx;
+      } else if (char >= '0' && char <= '9') {
+        result += char;
+      }
+    }
+    return result;
+  };
+
+  const getFieldValue = (name, overrideVal) => {
+    if (overrideVal !== undefined) return overrideVal;
+    switch (name) {
+      case 'selectedServiceId': return selectedServiceId;
+      case 'selectedCity': return selectedCity;
+      case 'street': return street;
+      case 'building': return building;
+      case 'customDate': return customDate;
+      case 'fullName': return fullName;
+      case 'phone': return phone;
+      case 'whatsappPhone': return whatsappPhone;
+      case 'notes': return notes;
+      default: return '';
+    }
+  };
+
+  const validateField = (name, overrideVal) => {
+    let err = '';
+    const val = getFieldValue(name, overrideVal);
+
+    if (name === 'selectedServiceId') {
+      if (!val) err = 'يرجى اختيار الخدمة المطلوبة للمتابعة.';
+    } else if (name === 'selectedCity') {
+      if (!val) err = 'يرجى تحديد المنطقة أو المدينة.';
+    } else if (name === 'street') {
+      const trimmed = (val || '').trim();
+      if (!trimmed) {
+        err = 'اسم الشارع أو الكمبوند مطلوب.';
+      } else if (trimmed.length < 4) {
+        err = 'يرجى إدخال اسم شارع أو كمبوند صحيح وكامل (4 أحرف على الأقل).';
+      } else if (/^\d+$/.test(trimmed)) {
+        err = 'اسم الشارع لا يمكن أن يكون أرقاماً فقط.';
+      }
+    } else if (name === 'building') {
+      const trimmed = (val || '').trim();
+      if (!trimmed) {
+        err = 'يرجى إدخال رقم العمارة أو الفيلا.';
+      } else if (trimmed.length > 25) {
+        err = 'رقم العمارة طويل جداً.';
+      }
+    } else if (name === 'customDate') {
+      if (dateOption === 'custom') {
+        if (!val) {
+          err = 'يرجى تحديد التاريخ المفضل للزيارة.';
+        } else if (val < todayString) {
+          err = 'لا يمكن حجز موعد في تاريخ سابق، يرجى اختيار تاريخ اليوم أو موعد قادم.';
+        }
+      }
+    } else if (name === 'fullName') {
+      const trimmed = (val || '').trim();
+      if (!trimmed) {
+        err = 'يرجى كتابة الاسم بالكامل.';
+      } else if (trimmed.length < 4) {
+        err = 'الاسم قصير جداً، يرجى كتابة اسم كامل وصحيح.';
+      } else if (!/^[\u0600-\u06FFa-zA-Z\s]+$/.test(trimmed)) {
+        err = 'يرجى كتابة الاسم بالحروف فقط بدون أرقام أو رموز خاصة.';
+      } else {
+        const words = trimmed.split(/\s+/).filter(Boolean);
+        if (words.length < 2) {
+          err = 'يرجى كتابة الاسم ثنائياً على الأقل (الاسم واسم العائلة).';
+        }
+      }
+    } else if (name === 'phone') {
+      const digits = normalizeDigits(val);
+      if (!digits) {
+        err = 'رقم الموبايل مطلوب للتواصل وتأكيد الحجز.';
+      } else if (digits.length !== 11) {
+        err = 'رقم الموبايل يجب أن يتكون من 11 رقماً بالضبط (أدخلت ' + digits.length + ' أرقام).';
+      } else if (!/^01[0125]/.test(digits)) {
+        err = 'رقم غير صالح، يجب أن يبدأ بأحد الشبكات المصرية (010, 011, 012, 015).';
+      }
+    } else if (name === 'whatsappPhone') {
+      if (!whatsappSameAsPhone) {
+        const digits = normalizeDigits(val);
+        if (!digits) {
+          err = 'يرجى إدخال رقم الواتساب أو تحديد خيار الموبايل بالأعلى.';
+        } else if (digits.length !== 11) {
+          err = 'رقم الواتساب يجب أن يتكون من 11 رقماً بالضبط.';
+        } else if (!/^01[0125]/.test(digits)) {
+          err = 'رقم غير صالح، يجب أن يبدأ بأحد الشبكات المصرية (010, 011, 012, 015).';
+        }
+      }
+    }
+
+    return err;
+  };
+
+  const handleBlur = (fieldName) => {
+    setTouched((prev) => ({ ...prev, [fieldName]: true }));
+    const err = validateField(fieldName);
+    setErrors((prev) => ({ ...prev, [fieldName]: err }));
+  };
+
+  const handlePhoneChange = (e) => {
+    const raw = e.target.value;
+    const digits = normalizeDigits(raw).slice(0, 11);
+    setPhone(digits);
+    if (touched.phone) {
+      setErrors((prev) => ({ ...prev, phone: validateField('phone', digits) }));
+    }
+  };
+
+  const handleWhatsappPhoneChange = (e) => {
+    const raw = e.target.value;
+    const digits = normalizeDigits(raw).slice(0, 11);
+    setWhatsappPhone(digits);
+    if (touched.whatsappPhone) {
+      setErrors((prev) => ({ ...prev, whatsappPhone: validateField('whatsappPhone', digits) }));
+    }
+  };
+
+  const validateStep = (step) => {
+    const newErrors = {};
+    const newTouched = { ...touched };
+
+    if (step === 1) {
+      const sErr = validateField('selectedServiceId');
+      if (sErr) newErrors.selectedServiceId = sErr;
+      newTouched.selectedServiceId = true;
+    } else if (step === 2) {
+      const cityErr = validateField('selectedCity');
+      if (cityErr) newErrors.selectedCity = cityErr;
+      newTouched.selectedCity = true;
+
+      const streetErr = validateField('street');
+      if (streetErr) newErrors.street = streetErr;
+      newTouched.street = true;
+
+      const buildingErr = validateField('building');
+      if (buildingErr) newErrors.building = buildingErr;
+      newTouched.building = true;
+
+      if (dateOption === 'custom') {
+        const dateErr = validateField('customDate');
+        if (dateErr) newErrors.customDate = dateErr;
+        newTouched.customDate = true;
+      }
+    } else if (step === 3) {
+      const nameErr = validateField('fullName');
+      if (nameErr) newErrors.fullName = nameErr;
+      newTouched.fullName = true;
+
+      const phoneErr = validateField('phone');
+      if (phoneErr) newErrors.phone = phoneErr;
+      newTouched.phone = true;
+
+      if (!whatsappSameAsPhone) {
+        const waErr = validateField('whatsappPhone');
+        if (waErr) newErrors.whatsappPhone = waErr;
+        newTouched.whatsappPhone = true;
+      }
+    }
+
+    setTouched(newTouched);
+    setErrors((prev) => ({ ...prev, ...newErrors }));
+    return newErrors;
+  };
+
   const handleNextStep = (e) => {
     if (e) e.preventDefault();
     setFormError('');
 
+    const stepErrors = validateStep(currentStep);
+    const errorKeys = Object.keys(stepErrors);
+    if (errorKeys.length > 0) {
+      setFormError(stepErrors[errorKeys[0]]);
+      return;
+    }
+
     if (currentStep === 1) {
-      if (!selectedServiceId) {
-        setFormError('يرجى اختيار الخدمة المطلوبة للمتابعة.');
-        return;
-      }
       setCurrentStep(2);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (currentStep === 2) {
-      if (!selectedCity) {
-        setFormError('يرجى تحديد المنطقة أو المدينة.');
-        return;
-      }
-      if (!street.trim()) {
-        setFormError('يرجى إدخال اسم الشارع أو العنوان.');
-        return;
-      }
-      if (dateOption === 'custom' && !customDate) {
-        setFormError('يرجى تحديد التاريخ المفضل للزيارة.');
-        return;
-      }
       setCurrentStep(3);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (currentStep === 3) {
-      if (!fullName.trim()) {
-        setFormError('يرجى كتابة الاسم بالكامل.');
-        return;
-      }
-      const cleanPhone = phone.trim().replace(/\s+/g, '');
-      if (!cleanPhone || cleanPhone.length < 10) {
-        setFormError('يرجى إدخال رقم هاتف محمول صحيح (مثال: 01012345678).');
-        return;
-      }
-
       const generatedId = `SLH-${Math.floor(10000 + Math.random() * 90000)}`;
       setBookingId(generatedId);
       setCurrentStep(4);
@@ -415,29 +575,81 @@ export default function Booking() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-[#121c28] mb-1.5">
-                        اسم الشارع / الكمبوند <span className="text-red-500">*</span>
-                      </label>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-xs font-bold text-[#121c28]">
+                          اسم الشارع / الكمبوند <span className="text-red-500">*</span>
+                        </label>
+                        {touched.street && !errors.street && street.trim() && (
+                          <span className="text-[11px] font-bold text-green-600 flex items-center gap-1">
+                            <FontAwesomeIcon icon={faCircleCheck} />
+                            <span>مكتمل</span>
+                          </span>
+                        )}
+                      </div>
                       <input
                         type="text"
                         value={street}
-                        onChange={(e) => setStreet(e.target.value)}
+                        onChange={(e) => {
+                          setStreet(e.target.value);
+                          if (touched.street) {
+                            setErrors((prev) => ({ ...prev, street: validateField('street', e.target.value) }));
+                          }
+                        }}
+                        onBlur={() => handleBlur('street')}
                         placeholder="مثال: شارع التسعين الشمالي، أو كمبوند بيفرلي هيلز"
-                        className="w-full h-11 px-3.5 rounded-lg border border-[#dfe9fa] bg-[#f8f9ff] text-xs focus:bg-white focus:outline-none focus:border-[#082545] transition-colors"
+                        className={`w-full h-11 px-3.5 rounded-lg border text-xs transition-colors ${
+                          touched.street && errors.street
+                            ? 'border-[#ba1a1a] bg-[#fff8f7] focus:outline-none focus:border-[#ba1a1a]'
+                            : touched.street && street.trim()
+                            ? 'border-green-600 bg-white focus:outline-none focus:border-green-600'
+                            : 'border-[#dfe9fa] bg-[#f8f9ff] focus:bg-white focus:outline-none focus:border-[#082545]'
+                        }`}
                       />
+                      {touched.street && errors.street && (
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#ba1a1a] mt-1.5">
+                          <FontAwesomeIcon icon={faCircleExclamation} className="text-xs shrink-0" />
+                          <span>{errors.street}</span>
+                        </div>
+                      )}
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-[#121c28] mb-1.5">
-                        رقم العمارة / الفيلا
-                      </label>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-xs font-bold text-[#121c28]">
+                          رقم العمارة / الفيلا <span className="text-red-500">*</span>
+                        </label>
+                        {touched.building && !errors.building && building.trim() && (
+                          <span className="text-[11px] font-bold text-green-600 flex items-center gap-1">
+                            <FontAwesomeIcon icon={faCircleCheck} />
+                            <span>مكتمل</span>
+                          </span>
+                        )}
+                      </div>
                       <input
                         type="text"
                         value={building}
-                        onChange={(e) => setBuilding(e.target.value)}
+                        onChange={(e) => {
+                          setBuilding(e.target.value);
+                          if (touched.building) {
+                            setErrors((prev) => ({ ...prev, building: validateField('building', e.target.value) }));
+                          }
+                        }}
+                        onBlur={() => handleBlur('building')}
                         placeholder="مثال: عمارة 14 أو فيلا 8"
-                        className="w-full h-11 px-3.5 rounded-lg border border-[#dfe9fa] bg-[#f8f9ff] text-xs focus:bg-white focus:outline-none focus:border-[#082545] transition-colors"
+                        className={`w-full h-11 px-3.5 rounded-lg border text-xs transition-colors ${
+                          touched.building && errors.building
+                            ? 'border-[#ba1a1a] bg-[#fff8f7] focus:outline-none focus:border-[#ba1a1a]'
+                            : touched.building && building.trim()
+                            ? 'border-green-600 bg-white focus:outline-none focus:border-green-600'
+                            : 'border-[#dfe9fa] bg-[#f8f9ff] focus:bg-white focus:outline-none focus:border-[#082545]'
+                        }`}
                       />
+                      {touched.building && errors.building && (
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#ba1a1a] mt-1.5">
+                          <FontAwesomeIcon icon={faCircleExclamation} className="text-xs shrink-0" />
+                          <span>{errors.building}</span>
+                        </div>
+                      )}
                     </div>
 
                     <div>
@@ -447,6 +659,7 @@ export default function Booking() {
                       <input
                         type="text"
                         value={floorAppt}
+                        maxLength={30}
                         onChange={(e) => setFloorAppt(e.target.value)}
                         placeholder="مثال: الدور الثالث، شقة 6"
                         className="w-full h-11 px-3.5 rounded-lg border border-[#dfe9fa] bg-[#f8f9ff] text-xs focus:bg-white focus:outline-none focus:border-[#082545] transition-colors"
@@ -460,6 +673,7 @@ export default function Booking() {
                       <input
                         type="text"
                         value={landmark}
+                        maxLength={60}
                         onChange={(e) => setLandmark(e.target.value)}
                         placeholder="مثال: بجوار صيدلية أو أمام المسجد"
                         className="w-full h-11 px-3.5 rounded-lg border border-[#dfe9fa] bg-[#f8f9ff] text-xs focus:bg-white focus:outline-none focus:border-[#082545] transition-colors"
@@ -530,14 +744,31 @@ export default function Booking() {
                     {dateOption === 'custom' && (
                       <div className="mb-4">
                         <label className="block text-xs font-bold text-[#121c28] mb-1">
-                          حدد اليوم من التقويم
+                          حدد اليوم من التقويم <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="date"
+                          min={todayString}
                           value={customDate}
-                          onChange={(e) => setCustomDate(e.target.value)}
-                          className="h-11 px-3 rounded-lg border border-[#dfe9fa] bg-white text-xs font-montserrat"
+                          onChange={(e) => {
+                            setCustomDate(e.target.value);
+                            if (touched.customDate) {
+                              setErrors((prev) => ({ ...prev, customDate: validateField('customDate', e.target.value) }));
+                            }
+                          }}
+                          onBlur={() => handleBlur('customDate')}
+                          className={`h-11 px-3 rounded-lg border text-xs font-montserrat ${
+                            touched.customDate && errors.customDate
+                              ? 'border-[#ba1a1a] bg-[#fff8f7] focus:outline-none focus:border-[#ba1a1a]'
+                              : 'border-[#dfe9fa] bg-white focus:outline-none focus:border-[#082545]'
+                          }`}
                         />
+                        {touched.customDate && errors.customDate && (
+                          <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#ba1a1a] mt-1.5">
+                            <FontAwesomeIcon icon={faCircleExclamation} className="text-xs shrink-0" />
+                            <span>{errors.customDate}</span>
+                          </div>
+                        )}
                       </div>
                     )}
 
@@ -606,35 +837,85 @@ export default function Booking() {
 
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-xs font-bold text-[#121c28] mb-1.5">
-                        الاسم بالكامل <span className="text-red-500">*</span>
-                      </label>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-xs font-bold text-[#121c28]">
+                          الاسم بالكامل <span className="text-red-500">*</span>
+                        </label>
+                        {touched.fullName && !errors.fullName && fullName.trim() && (
+                          <span className="text-[11px] font-bold text-green-600 flex items-center gap-1">
+                            <FontAwesomeIcon icon={faCircleCheck} />
+                            <span>صحيح</span>
+                          </span>
+                        )}
+                      </div>
                       <input
                         type="text"
                         value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
+                        onChange={(e) => {
+                          setFullName(e.target.value);
+                          if (touched.fullName) {
+                            setErrors((prev) => ({ ...prev, fullName: validateField('fullName', e.target.value) }));
+                          }
+                        }}
+                        onBlur={() => handleBlur('fullName')}
                         placeholder="مثال: أحمد محمد علي"
-                        className="w-full h-11 px-3.5 rounded-lg border border-[#dfe9fa] bg-[#f8f9ff] text-xs focus:bg-white focus:outline-none focus:border-[#082545] transition-colors"
+                        className={`w-full h-11 px-3.5 rounded-lg border text-xs transition-colors ${
+                          touched.fullName && errors.fullName
+                            ? 'border-[#ba1a1a] bg-[#fff8f7] focus:outline-none focus:border-[#ba1a1a]'
+                            : touched.fullName && fullName.trim()
+                            ? 'border-green-600 bg-white focus:outline-none focus:border-green-600'
+                            : 'border-[#dfe9fa] bg-[#f8f9ff] focus:bg-white focus:outline-none focus:border-[#082545]'
+                        }`}
                       />
+                      {touched.fullName && errors.fullName && (
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#ba1a1a] mt-1.5">
+                          <FontAwesomeIcon icon={faCircleExclamation} className="text-xs shrink-0" />
+                          <span>{errors.fullName}</span>
+                        </div>
+                      )}
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-[#121c28] mb-1.5">
-                        رقم الموبايل الأساسي <span className="text-red-500">*</span>
-                      </label>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-xs font-bold text-[#121c28]">
+                          رقم الموبايل الأساسي <span className="text-red-500">*</span>
+                        </label>
+                        <span className="text-[10px] text-[#595f64] font-montserrat">
+                          {phone.length}/11 رقم
+                        </span>
+                      </div>
                       <div className="relative">
                         <input
                           type="tel"
                           value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          onChange={handlePhoneChange}
+                          onBlur={() => handleBlur('phone')}
                           placeholder="01012345678"
                           dir="ltr"
-                          className="w-full h-11 px-3.5 pr-10 rounded-lg border border-[#dfe9fa] bg-[#f8f9ff] text-xs font-montserrat font-semibold focus:bg-white focus:outline-none focus:border-[#082545] transition-colors text-right"
+                          maxLength={11}
+                          className={`w-full h-11 px-3.5 pr-10 pl-10 rounded-lg border text-xs font-montserrat font-semibold transition-colors text-right ${
+                            touched.phone && errors.phone
+                              ? 'border-[#ba1a1a] bg-[#fff8f7] focus:outline-none focus:border-[#ba1a1a]'
+                              : touched.phone && phone.length === 11 && !errors.phone
+                              ? 'border-green-600 bg-white focus:outline-none focus:border-green-600'
+                              : 'border-[#dfe9fa] bg-[#f8f9ff] focus:bg-white focus:outline-none focus:border-[#082545]'
+                          }`}
                         />
                         <div className="absolute inset-y-0 right-3 flex items-center text-[#595f64] pointer-events-none text-xs">
                           <FontAwesomeIcon icon={faPhone} />
                         </div>
+                        {touched.phone && !errors.phone && phone.length === 11 && (
+                          <div className="absolute inset-y-0 left-3 flex items-center text-green-600 pointer-events-none text-xs">
+                            <FontAwesomeIcon icon={faCircleCheck} />
+                          </div>
+                        )}
                       </div>
+                      {touched.phone && errors.phone && (
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#ba1a1a] mt-1.5">
+                          <FontAwesomeIcon icon={faCircleExclamation} className="text-xs shrink-0" />
+                          <span>{errors.phone}</span>
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex items-center gap-2 pt-1">
@@ -642,8 +923,17 @@ export default function Booking() {
                         type="checkbox"
                         id="whatsappSame"
                         checked={whatsappSameAsPhone}
-                        onChange={(e) => setWhatsappSameAsPhone(e.target.checked)}
-                        className="w-4 h-4 rounded text-[#FF9F1C] focus:ring-[#FF9F1C] border-[#dfe9fa]"
+                        onChange={(e) => {
+                          setWhatsappSameAsPhone(e.target.checked);
+                          if (e.target.checked) {
+                            setErrors((prev) => {
+                              const copy = { ...prev };
+                              delete copy.whatsappPhone;
+                              return copy;
+                            });
+                          }
+                        }}
+                        className="w-4 h-4 rounded text-[#FF9F1C] focus:ring-[#FF9F1C] border-[#dfe9fa] cursor-pointer"
                       />
                       <label htmlFor="whatsappSame" className="text-xs font-bold text-[#121c28] cursor-pointer">
                         رقم الموبايل هو نفس رقم الواتساب لتلقي تفاصيل الفني
@@ -652,17 +942,46 @@ export default function Booking() {
 
                     {!whatsappSameAsPhone && (
                       <div>
-                        <label className="block text-xs font-bold text-[#121c28] mb-1.5">
-                          رقم واتساب مختلف
-                        </label>
-                        <input
-                          type="tel"
-                          value={whatsappPhone}
-                          onChange={(e) => setWhatsappPhone(e.target.value)}
-                          placeholder="01xxxxxxxxx"
-                          dir="ltr"
-                          className="w-full h-11 px-3.5 rounded-lg border border-[#dfe9fa] bg-[#f8f9ff] text-xs font-montserrat text-right"
-                        />
+                        <div className="flex items-center justify-between mb-1.5">
+                          <label className="block text-xs font-bold text-[#121c28]">
+                            رقم واتساب مختلف <span className="text-red-500">*</span>
+                          </label>
+                          <span className="text-[10px] text-[#595f64] font-montserrat">
+                            {whatsappPhone.length}/11 رقم
+                          </span>
+                        </div>
+                        <div className="relative">
+                          <input
+                            type="tel"
+                            value={whatsappPhone}
+                            onChange={handleWhatsappPhoneChange}
+                            onBlur={() => handleBlur('whatsappPhone')}
+                            placeholder="01xxxxxxxxx"
+                            dir="ltr"
+                            maxLength={11}
+                            className={`w-full h-11 px-3.5 pr-10 pl-10 rounded-lg border text-xs font-montserrat font-semibold transition-colors text-right ${
+                              touched.whatsappPhone && errors.whatsappPhone
+                                ? 'border-[#ba1a1a] bg-[#fff8f7] focus:outline-none focus:border-[#ba1a1a]'
+                                : touched.whatsappPhone && whatsappPhone.length === 11 && !errors.whatsappPhone
+                                ? 'border-green-600 bg-white focus:outline-none focus:border-green-600'
+                                : 'border-[#dfe9fa] bg-[#f8f9ff] focus:bg-white focus:outline-none focus:border-[#082545]'
+                            }`}
+                          />
+                          <div className="absolute inset-y-0 right-3 flex items-center text-[#25D366] pointer-events-none text-xs">
+                            <FontAwesomeIcon icon={faWhatsapp} />
+                          </div>
+                          {touched.whatsappPhone && !errors.whatsappPhone && whatsappPhone.length === 11 && (
+                            <div className="absolute inset-y-0 left-3 flex items-center text-green-600 pointer-events-none text-xs">
+                              <FontAwesomeIcon icon={faCircleCheck} />
+                            </div>
+                          )}
+                        </div>
+                        {touched.whatsappPhone && errors.whatsappPhone && (
+                          <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#ba1a1a] mt-1.5">
+                            <FontAwesomeIcon icon={faCircleExclamation} className="text-xs shrink-0" />
+                            <span>{errors.whatsappPhone}</span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
